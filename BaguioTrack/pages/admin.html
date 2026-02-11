@@ -71,11 +71,55 @@
       <button id="saveAnnouncementBtn">Save Announcement</button>
       <p id="saveStatus" class="saved-note"></p>
     </section>
+
+    <!-- ✅ NEW: USER FEEDBACK PANEL -->
+    <section class="panel" style="margin-top: 16px;">
+      <h2>User Feedback</h2>
+
+      <div id="feedbackStatus" class="saved-note" style="margin-bottom: 10px;"></div>
+
+      <!-- Container where feedback appears -->
+      <div id="feedbackList" style="display: grid; gap: 12px;"></div>
+
+      <!-- Template styles (works even if your admin.css doesn't have these) -->
+      <style>
+        .fb-card{
+          background: #fff;
+          border-radius: 12px;
+          padding: 14px 14px;
+          box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+        .fb-meta{
+          font-size: 13px;
+          opacity: 0.85;
+          margin-bottom: 8px;
+          line-height: 1.35;
+        }
+        .fb-msg{
+          font-size: 14px;
+          line-height: 1.5;
+          white-space: pre-wrap;
+        }
+        .fb-empty{
+          background: #fff;
+          border-radius: 12px;
+          padding: 14px;
+          box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+      </style>
+    </section>
   </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      orderBy,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDPFnyJC66A-HQC3dKCQQ4SobAFRezx7fU",
@@ -94,6 +138,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
     const adminWelcome = document.getElementById("adminWelcome");
 
@@ -120,6 +165,9 @@
       localStorage.setItem("isAdminLoggedIn", "true");
       localStorage.setItem("adminEmail", signedInEmail);
       adminWelcome.textContent = `Logged in as ${signedInEmail}`;
+
+      // ✅ Start listening to feedback ONLY when admin is verified
+      startFeedbackListener();
     });
 
     document.getElementById("adminLogoutBtn").addEventListener("click", () => {
@@ -133,6 +181,7 @@
       });
     });
 
+    // Announcement (your current code)
     const announcementInput = document.getElementById("announcementInput");
     const saveStatus = document.getElementById("saveStatus");
 
@@ -145,6 +194,73 @@
         saveStatus.textContent = "";
       }, 3000);
     });
+
+    // ✅ Feedback viewer (Firestore -> Admin page)
+    const feedbackList = document.getElementById("feedbackList");
+    const feedbackStatus = document.getElementById("feedbackStatus");
+
+    function formatDate(ts) {
+      try {
+        if (!ts) return "Just now";
+        return ts.toDate().toLocaleString();
+      } catch {
+        return "Unknown date";
+      }
+    }
+
+    function renderEmpty() {
+      feedbackList.innerHTML = "";
+      const empty = document.createElement("div");
+      empty.className = "fb-empty";
+      empty.textContent = "No feedback yet.";
+      feedbackList.appendChild(empty);
+    }
+
+    function addFeedbackCard(data) {
+  const card = document.createElement("div");
+  card.className = "fb-card";
+
+  const msg = document.createElement("div");
+  msg.className = "fb-msg";
+  msg.textContent = (data.message || "").toString();
+
+  card.appendChild(msg);
+  feedbackList.appendChild(card);
+}
+
+
+    function startFeedbackListener() {
+      feedbackStatus.textContent = "Loading feedback...";
+
+      const fbQuery = query(
+        collection(db, "feedback"),
+        orderBy("createdAt", "desc")
+      );
+
+      onSnapshot(
+        fbQuery,
+        (snapshot) => {
+          feedbackList.innerHTML = "";
+
+          if (snapshot.empty) {
+            feedbackStatus.textContent = "";
+            renderEmpty();
+            return;
+          }
+
+          feedbackStatus.textContent = `Showing ${snapshot.size} feedback message(s).`;
+
+          snapshot.forEach((docSnap) => {
+            addFeedbackCard(docSnap.data());
+          });
+        },
+        (error) => {
+          console.error(error);
+          feedbackStatus.textContent = "❌ Failed to load feedback. Check Firestore rules / console.";
+          renderEmpty();
+        }
+      );
+    }
   </script>
 </body>
 </html>
