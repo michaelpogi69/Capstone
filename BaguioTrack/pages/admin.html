@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baguio Track | Admin Dashboard</title>
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p id="adminWelcome">Managing Baguio Track</p>
+      </div>
+      <button class="logout-btn" id="adminLogoutBtn">Logout</button>
+    </header>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <h3>Registered Users</h3>
+        <p class="value">1,248</p>
+      </article>
+      <article class="stat-card">
+        <h3>Daily Visitors</h3>
+        <p class="value">532</p>
+      </article>
+      <article class="stat-card">
+        <h3>Tourist Spot Pages</h3>
+        <p class="value">9</p>
+      </article>
+      <article class="stat-card">
+        <h3>Safety Posts</h3>
+        <p class="value">14</p>
+      </article>
+    </section>
+
+    <section class="panel-grid">
+      <article class="panel">
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+          <button class="action-btn" data-page="tourist.html">Edit Tourist Spots</button>
+          <button class="action-btn" data-page="jeepterminal.html">Update Terminals</button>
+          <button class="action-btn" data-page="safety.html">Publish Safety Tip</button>
+          <button class="action-btn" data-page="about.html">Edit About Page</button>
+        </div>
+      </article>
+
+      <article class="panel">
+        <h2>Recent Activity</h2>
+        <ul class="activity-list">
+          <li>
+            Updated terminal fare guide.
+            <span class="activity-time">Today, 9:40 AM</span>
+          </li>
+          <li>
+            Added new image to Mines View page.
+            <span class="activity-time">Yesterday, 4:20 PM</span>
+          </li>
+          <li>
+            Safety hotline list was reviewed.
+            <span class="activity-time">Yesterday, 11:10 AM</span>
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="panel announcement-box" style="margin-top: 16px;">
+      <h2>Site Announcement</h2>
+      <textarea id="announcementInput" placeholder="Write an announcement for all users..."></textarea>
+      <button id="saveAnnouncementBtn">Save Announcement</button>
+      <p id="saveStatus" class="saved-note"></p>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPFnyJC66A-HQC3dKCQQ4SobAFRezx7fU",
+      authDomain: "baguio-track-c702f.firebaseapp.com",
+      projectId: "baguio-track-c702f",
+      storageBucket: "baguio-track-c702f.firebasestorage.app",
+      messagingSenderId: "27598181344",
+      appId: "1:27598181344:web:97bf7dd2a32dbfe14ed185"
+    };
+
+    const ADMIN_ALLOWLIST = [
+      "michaelreynotarte69@gmail.com",
+      "jammytanglib45@gmail.com",
+      "psychandreilopez18@gmail.com"
+    ];
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const adminWelcome = document.getElementById("adminWelcome");
+
+    const forceLogout = async () => {
+      localStorage.removeItem("isAdminLoggedIn");
+      localStorage.removeItem("adminEmail");
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.log("Sign-out skipped:", error.message);
+      }
+      window.location.href = "adminlogin.html";
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      const signedInEmail = user?.email?.toLowerCase() || "";
+      const isAllowedAdmin = ADMIN_ALLOWLIST.includes(signedInEmail);
+
+      if (!user || !isAllowedAdmin) {
+        forceLogout();
+        return;
+      }
+
+      localStorage.setItem("isAdminLoggedIn", "true");
+      localStorage.setItem("adminEmail", signedInEmail);
+      adminWelcome.textContent = `Logged in as ${signedInEmail}`;
+    });
+
+    document.getElementById("adminLogoutBtn").addEventListener("click", () => {
+      forceLogout();
+    });
+
+    document.querySelectorAll(".action-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const targetPage = button.getAttribute("data-page");
+        window.location.href = targetPage;
+      });
+    });
+
+    const announcementInput = document.getElementById("announcementInput");
+    const saveStatus = document.getElementById("saveStatus");
+
+    announcementInput.value = localStorage.getItem("siteAnnouncement") || "";
+
+    document.getElementById("saveAnnouncementBtn").addEventListener("click", () => {
+      localStorage.setItem("siteAnnouncement", announcementInput.value.trim());
+      saveStatus.textContent = "Announcement saved successfully.";
+      setTimeout(() => {
+        saveStatus.textContent = "";
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
