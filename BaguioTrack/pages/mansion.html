@@ -19,20 +19,17 @@
     a { text-decoration: none; }
 
     /* HEADER */
-header {
-  background: #145532;
-  color: #fff;
-  padding: 12px 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  /* STICKY NAV */
-  position: sticky;
-  top: 0;
-  z-index: 2000;
-}
-
+    header {
+      background: #145532;
+      color: #fff;
+      padding: 12px 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+    }
     header h2 { margin: 0; font-size: 22px; font-weight: 600; }
 
     nav a {
@@ -40,10 +37,7 @@ header {
       margin-left: 25px;
       font-weight: 500;
     }
-
-    nav a:hover, nav a.active {
-      color: #d8c7a0;
-    }
+    nav a:hover, nav a.active { color: #d8c7a0; }
 
     /* MAIN */
     main {
@@ -95,6 +89,18 @@ header {
       cursor: pointer;
       font-weight: bold;
     }
+    #prevBtn, #nextBtn {
+      position: fixed;
+      top: 50%;
+      font-size: 40px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transform: translateY(-50%);
+    }
+    #prevBtn { left: 20px; }
+    #nextBtn { right: 20px; }
 
     /* CARDS */
     .card {
@@ -103,7 +109,6 @@ header {
       border-radius: 12px;
       box-shadow: 0 3px 8px rgba(0,0,0,0.1);
     }
-
     .card h3 { margin-top: 0; color: #154d2e; }
 
     /* TITLES */
@@ -125,7 +130,6 @@ header {
       gap: 25px;
       margin-top: 25px;
     }
-
     .back {
       display: inline-block;
       margin-top: 20px;
@@ -146,7 +150,6 @@ header {
 <body>
 
 <header>
-
   <div class="logo-area" style="display:flex;align-items:center;gap:12px;">
     <img src="../assets/images/user_8801434.png" alt="User Profile" style="width:40px;height:40px;border-radius:50%;">
     <h2 style="margin:0;font-size:22px;font-weight:600;">Baguio Track</h2>
@@ -162,7 +165,6 @@ header {
 </header>
 
 <main>
-
   <div class="top-grid">
     <img src="../assets/images/mansion.jpg" class="hero-side-img" id="openImage" alt="The Mansion Baguio">
     <div class="card">
@@ -178,7 +180,6 @@ header {
   <p class="subtitle">Discover the historic summer residence of the Philippine President.</p>
 
   <div class="grid">
-
     <!-- LEFT -->
     <div>
       <div class="card">
@@ -211,44 +212,69 @@ header {
         </ul>
       </div>
     </div>
-
   </div>
 
   <a href="tourist.html" class="back">← Back to Tourist Spots</a>
-
 </main> 
 
-<!-- POPUP IMAGE -->
+<!-- POPUP IMAGE WITH NAVIGATION -->
 <div id="imgPopup">
   <span id="closePopup">&times;</span>
+  <button id="prevBtn">❮</button>
   <img src="../assets/images/mansion.jpg" alt="The Mansion Baguio">
+  <button id="nextBtn">❯</button>
 </div>
 
 <!-- LEAFLET JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// IMAGE POPUP
-const popup = document.getElementById("imgPopup");
-const openImg = document.getElementById("openImage");
-const closePopupBtn = document.getElementById("closePopup");
+  // IMAGE POPUP WITH NAVIGATION
+  const heroImg = document.getElementById("openImage");
+  const popup = document.getElementById("imgPopup");
+  const popupImg = popup.querySelector("img");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
-openImg.onclick = () => popup.style.display = "flex";
-closePopupBtn.onclick = () => popup.style.display = "none";
-popup.onclick = e => { if(e.target === popup) popup.style.display = "none"; };
+  const images = [
+    "../assets/images/mansion.jpg",
+    "../assets/images/mh.jpg"
+  ];
+  let currentIndex = 0;
 
-// GIS MAP
-const map = L.map('map').setView([16.4128927, 120.6199063], 17);
+  heroImg.onclick = () => {
+    popup.style.display = "flex";
+    popupImg.src = images[currentIndex];
+  };
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap'
-}).addTo(map);
+  document.getElementById("closePopup").onclick = () => popup.style.display = "none";
+  popup.onclick = e => { if(e.target === popup) popup.style.display = "none"; };
 
-L.marker([16.4128927, 120.6199063])
-  .addTo(map)
-  .bindPopup("<b>The Mansion</b><br>Baguio City")
-  .openPopup();
+  nextBtn.onclick = e => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % images.length;
+    popupImg.src = images[currentIndex];
+    heroImg.src = images[currentIndex];
+  };
+
+  prevBtn.onclick = e => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    popupImg.src = images[currentIndex];
+    heroImg.src = images[currentIndex];
+  };
+
+  // GIS MAP
+  const map = L.map('map').setView([16.4128927, 120.6199063], 17);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  L.marker([16.4128927, 120.6199063])
+    .addTo(map)
+    .bindPopup("<b>The Mansion</b><br>Baguio City")
+    .openPopup();
 </script>
 
 </body>
 </html>
-
