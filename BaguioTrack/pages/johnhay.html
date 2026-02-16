@@ -19,14 +19,19 @@
     a { text-decoration: none; }
 
     /* HEADER */
-    header {
-      background: #145532;
-      color: #fff;
-      padding: 12px 45px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+header {
+  background: #145532;
+  color: #fff;
+  padding: 12px 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* STICKY NAV */
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+}
     header .logo-area {
       display: flex;
       align-items: center;
@@ -272,3 +277,4 @@
 
 </body>
 </html>
+
