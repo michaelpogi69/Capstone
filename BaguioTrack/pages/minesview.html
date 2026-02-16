@@ -19,19 +19,15 @@
     a { text-decoration: none; }
 
     /* HEADER */
-header {
-  background: #145532;
-  color: #fff;
-  padding: 12px 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    header {
+      background: #145532;
+      color: #fff;
+      padding: 12px 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  /* STICKY NAV */
-  position: sticky;
-  top: 0;
-  z-index: 2000;
-}
     header h2 { margin: 0; font-size: 22px; font-weight: 600; }
 
     nav a {
@@ -94,6 +90,18 @@ header {
       cursor: pointer;
       font-weight: bold;
     }
+    #prevBtn, #nextBtn {
+      position: fixed;
+      top: 50%;
+      font-size: 40px;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transform: translateY(-50%);
+    }
+    #prevBtn { left: 20px; }
+    #nextBtn { right: 20px; }
 
     /* CARDS */
     .card {
@@ -145,12 +153,10 @@ header {
 <body>
 
 <header>
-
-    <div class="logo-area" style="display:flex;align-items:center;gap:12px;">
+  <div class="logo-area" style="display:flex;align-items:center;gap:12px;">
     <img src="../assets/images/user_8801434.png" alt="User Profile" style="width:40px;height:40px;border-radius:50%;">
     <h2 style="margin:0;font-size:22px;font-weight:600;">Baguio Track</h2>
   </div>
-
 
   <nav>
     <a href="home.html">Home</a>
@@ -211,27 +217,54 @@ header {
   <a href="tourist.html" class="back">← Back to Tourist Spots</a>
 </main>
 
-<!-- POPUP IMAGE -->
+<!-- IMAGE POPUP WITH NEXT/PREV BUTTONS -->
 <div id="imgPopup">
   <span id="closePopup">&times;</span>
+  <button id="prevBtn">❮</button>
   <img src="../assets/images/minesviewpark.jpg" alt="Mines View Park">
+  <button id="nextBtn">❯</button>
 </div>
 
 <!-- LEAFLET GIS JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-  // IMAGE POPUP
+  // IMAGE POPUP WITH NAVIGATION
+  const heroImg = document.getElementById("openImage");
   const popup = document.getElementById("imgPopup");
-  const openImg = document.getElementById("openImage");
-  const closePopupBtn = document.getElementById("closePopup");
+  const popupImg = popup.querySelector("img");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
 
-  openImg.onclick = () => popup.style.display = "flex";
-  closePopupBtn.onclick = () => popup.style.display = "none";
-  popup.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
+  const images = [
+    "../assets/images/minesviewpark.jpg",
+    "../assets/images/mvp.jpg"
+  ];
+  let currentIndex = 0;
+
+  heroImg.onclick = () => {
+    popup.style.display = "flex";
+    popupImg.src = images[currentIndex];
+  };
+
+  document.getElementById("closePopup").onclick = () => popup.style.display = "none";
+  popup.onclick = e => { if(e.target === popup) popup.style.display = "none"; };
+
+  nextBtn.onclick = e => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % images.length;
+    popupImg.src = images[currentIndex];
+    heroImg.src = images[currentIndex];
+  };
+
+  prevBtn.onclick = e => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    popupImg.src = images[currentIndex];
+    heroImg.src = images[currentIndex];
+  };
 
   // GIS MAP (Leaflet)
   const map = L.map('map').setView([16.4197, 120.6274], 16);
-
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap'
   }).addTo(map);
@@ -241,9 +274,7 @@ header {
     .addTo(map)
     .bindPopup("<b>Mines View Park</b><br>Baguio City")
     .openPopup();
-
 </script>
 
 </body>
 </html>
-
