@@ -16,109 +16,133 @@
     }
 
     body {
-  background: url("../assets/images/123.png") no-repeat center center fixed;
-  background-size: cover;
-}
+      background: url("../assets/images/123.png") no-repeat center center fixed;
+      background-size: cover;
+    }
 
+    /* Announcement styling */
+    .announcement-section {
+      display: none;
+      padding: 20px;
+      max-width: 900px;
+      margin: 25px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .announcement-section h2 {
+      margin-top: 0;
+      color: #145532;
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- REDIRECT IF NOT LOGGED IN -->
-  <script>
-    if (localStorage.getItem("isLoggedIn") !== "true") {
-      window.location.href = "index.html";
-    }
-  </script>
+<script>
+  if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "index.html";
+  }
+</script>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo-area" id="profileArea">
-      <!-- Updated path for profile image -->
-      <img src="../assets/images/user_8801434.png" alt="User Profile" id="profileImage">
-      <h2 id="userName">Baguio Track</h2>
-      <input type="file" id="upload-photo" accept="image/*" style="display:none;">
+<header>
+  <div class="logo-area" id="profileArea">
+    <img src="../assets/images/user_8801434.png" id="profileImage">
+    <h2 id="userName">Baguio Track</h2>
+    <input type="file" id="upload-photo" accept="image/*" style="display:none;">
 
-      <div class="profile-dropdown" id="profileDropdown">
-        <ul>
-          <li><a href="#" id="editProfile">✏️ Edit Profile</a></li>
-          <li><a href="#" id="settings">⚙️ Settings</a></li>
-          <li><a href="#" id="helpSupport">🆘 Help & Support</a></li>
-          <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
-        </ul>
-      </div>
+    <div class="profile-dropdown" id="profileDropdown">
+      <ul>
+        <li><a href="#" id="editProfile">✏️ Edit Profile</a></li>
+        <li><a href="#" id="settings">⚙️ Settings</a></li>
+        <li><a href="#" id="helpSupport">🆘 Help & Support</a></li>
+        <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
+      </ul>
     </div>
+  </div>
 
-    <nav>
-      <a href="home.html">Home</a>
-      <a href="tourist.html">Tourist Spots</a>
-      <a href="jeepterminal.html">Terminals</a>
-      <a href="safety.html">Safety Tips</a>
-      <a href="about.html">About</a>
-    </nav>
-  </header>
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="tourist.html">Tourist Spots</a>
+    <a href="jeepterminal.html">Terminals</a>
+    <a href="safety.html">Safety Tips</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1 id="welcome-message">Welcome to Baguio Track</h1>
-      <p>Discover routes, fares, and destinations across Baguio City.</p>
-    </div>
-  </section>
+<section class="hero">
+  <div class="hero-content">
+    <h1 id="welcome-message">Welcome to Baguio Track</h1>
+    <p>Discover routes, fares, and destinations across Baguio City.</p>
+  </div>
+</section>
 
-  <!-- FEATURES SECTION -->
-  <section class="features">
-    <a href="tourist.html" class="feature-card">
-      <!-- Updated path for feature images -->
-      <img src="../assets/images/tourimage.jpg" alt="Tourist Icon">
-      <h3>Tourist Spots</h3>
-      <p>Must-see attractions around Baguio City.</p>
-    </a>
+<section class="features">
 
-    <a href="jeepterminal.html" class="feature-card">
-      <img src="../assets/images/jeepterminal.png" alt="Terminal Icon">
-      <h3>Jeepney Terminals</h3>
-      <p>Locate jeepney terminals and routes.</p>
-    </a>
+  <a href="tourist.html" class="feature-card">
+    <img src="../assets/images/tourimage.jpg">
+    <h3>Tourist Spots</h3>
+    <p>Must-see attractions around Baguio City.</p>
+  </a>
 
-    <a href="safety.html" class="feature-card">
-      <img src="../assets/images/safety.jpg" alt="Safety Icon">
-      <h3>Safety & Contacts</h3>
-      <p>Emergency tips and help numbers.</p>
-    </a>
-  </section>
+  <a href="jeepterminal.html" class="feature-card">
+    <img src="../assets/images/jeepterminal.png">
+    <h3>Jeepney Terminals</h3>
+    <p>Locate jeepney terminals and routes.</p>
+  </a>
 
-  <footer>
-    <p>© 2025 Baguio Track | All Rights Reserved</p>
-  </footer>
+  <a href="safety.html" class="feature-card">
+    <img src="../assets/images/safety.jpg">
+    <h3>Safety & Contacts</h3>
+    <p>Emergency tips and help numbers.</p>
+  </a>
 
-  <script>
-    // PROFILE INFO LOAD
-    const storedName = localStorage.getItem("baguioTrackUserName");
-    if (storedName) document.getElementById("userName").textContent = storedName;
+</section>
 
-    const profileImage = document.getElementById("profileImage");
-    const savedImage = localStorage.getItem("baguioTrackProfileImage");
-    if (savedImage) profileImage.src = savedImage;
+<!-- ✅ SITE ANNOUNCEMENT BELOW FEATURES -->
+<section id="announcementSection" class="announcement-section">
+  <h2>📢 Announcement</h2>
+  <p id="announcementText"></p>
+</section>
 
-    const dropdown = document.getElementById("profileDropdown");
+<footer>
+  <p>© 2025 Baguio Track | All Rights Reserved</p>
+</footer>
 
-    document.getElementById("profileArea").addEventListener("click", (e) => {
-      e.stopPropagation();
-      dropdown.classList.toggle("active");
-    });
+<script>
+  // PROFILE LOAD
+  const storedName = localStorage.getItem("baguioTrackUserName");
+  if (storedName) document.getElementById("userName").textContent = storedName;
 
-    document.addEventListener("click", () => dropdown.classList.remove("active"));
+  const profileImage = document.getElementById("profileImage");
+  const savedImage = localStorage.getItem("baguioTrackProfileImage");
+  if (savedImage) profileImage.src = savedImage;
 
-    // FIXED LOGOUT — DOES NOT DELETE ACCOUNT
-    document.getElementById("logoutBtn").addEventListener("click", (e) => {
-      e.preventDefault();
-      localStorage.removeItem("isLoggedIn");
-      alert("You have been logged out.");
-      window.location.href = "index.html";  // Redirect to login page
-    });
-  </script>
+  const dropdown = document.getElementById("profileDropdown");
+
+  document.getElementById("profileArea").addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle("active");
+  });
+
+  document.addEventListener("click", () => dropdown.classList.remove("active"));
+
+  document.getElementById("logoutBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("isLoggedIn");
+    alert("You have been logged out.");
+    window.location.href = "index.html";
+  });
+
+  // ✅ LOAD ANNOUNCEMENT FROM ADMIN
+  const announcement = localStorage.getItem("siteAnnouncement");
+  if (announcement && announcement.trim() !== "") {
+    document.getElementById("announcementText").textContent = announcement;
+    document.getElementById("announcementSection").style.display = "block";
+  }
+</script>
 
 </body>
 </html>
+  
