@@ -17,19 +17,14 @@
       color: #2c2c2c;
     }
 
-header {
-  background: #145532;
-  color: #fff;
-  padding: 12px 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  /* STICKY NAV */
-  position: sticky;
-  top: 0;
-  z-index: 2000;
-}
+    header {
+      background: #145532;
+      color: #fff;
+      padding: 12px 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     header h2 {
       margin: 0;
@@ -226,25 +221,64 @@ header {
 <!-- IMAGE POPUP -->
 <div id="imgPopup">
   <span id="closePopup">&times;</span>
+  <button id="prevBtn" style="position:absolute; left:20px; top:50%; font-size:40px; background:none; border:none; color:white; cursor:pointer; transform:translateY(-50%);">❮</button>
   <img src="../assets/images/botanicalpic.png">
+  <button id="nextBtn" style="position:absolute; right:20px; top:50%; font-size:40px; background:none; border:none; color:white; cursor:pointer; transform:translateY(-50%);">❯</button>
+</div>
+
+<!-- MAP SCRIPT -->
+<!-- IMAGE POPUP WITH NEXT/PREV BUTTONS -->
+<div id="imgPopup">
+  <span id="closePopup">&times;</span>
+  <button id="prevBtn" style="position:absolute; left:20px; top:50%; font-size:40px; background:none; border:none; color:white; cursor:pointer; transform:translateY(-50%);">❮</button>
+  <img src="../assets/images/botanicalpic.png">
+  <button id="nextBtn" style="position:absolute; right:20px; top:50%; font-size:40px; background:none; border:none; color:white; cursor:pointer; transform:translateY(-50%);">❯</button>
 </div>
 
 <!-- MAP SCRIPT -->
 <script>
-  // Lightbox
+  // Lightbox with manual navigation
+  const heroImg = document.getElementById("openImage");
   const popup = document.getElementById("imgPopup");
-  document.getElementById("openImage").onclick = () => popup.style.display = "flex";
+  const popupImg = popup.querySelector("img");
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  const images = [
+    "../assets/images/botanicalpic.png",
+    "../assets/images/bg2.jpg"
+  ];
+  let currentIndex = 0;
+
+  // Open lightbox
+  heroImg.onclick = () => {
+    popup.style.display = "flex";
+    popupImg.src = images[currentIndex];
+  };
+
+  // Close lightbox
   document.getElementById("closePopup").onclick = () => popup.style.display = "none";
   popup.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
+  // Next / Previous buttons
+  nextBtn.onclick = (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % images.length;
+    popupImg.src = images[currentIndex];
+    heroImg.src = images[currentIndex];
+  };
+
+  prevBtn.onclick = (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    popupImg.src = images[currentIndex];
+    heroImg.src = images[currentIndex];
+  };
+
   // Initialize Map
   const map = L.map('realMap');
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19
-  }).addTo(map);
-
-  // BIGGER red icon for Botanical Garden
   const bigRedIcon = new L.Icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
     shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
@@ -254,43 +288,24 @@ header {
     shadowSize: [56, 56]
   });
 
-  // Locations (WITH PACDAL CIRCLE PARK)
   const locations = [
-    {
-      name: "🌿 <b>Baguio Botanical Garden</b>",
-      coords: [16.4150, 120.6130],
-      icon: bigRedIcon
-    },
-    {
-      name: "☕ <b>Snooze Coffee</b>",
-      coords: [16.4150, 120.6124]
-    },
-    {
-      name: "🍴 <b>Pine Country Steak & Waffles</b>",
-      coords: [16.4149, 120.6122]
-    },
-    {
-      name: "🏞️ <b>Pacdal Circle Park</b>",
-      coords: [16.4163, 120.6153]
-    }
+    { name: "🌿 <b>Baguio Botanical Garden</b>", coords: [16.4150, 120.6130], icon: bigRedIcon },
+    { name: "☕ <b>Snooze Coffee</b>", coords: [16.4150, 120.6124] },
+    { name: "🍴 <b>Pine Country Steak & Waffles</b>", coords: [16.4149, 120.6122] },
+    { name: "🏞️ <b>Pacdal Circle Park</b>", coords: [16.4163, 120.6153] }
   ];
 
   const markers = [];
-
   locations.forEach(place => {
-    const marker = L.marker(
-      place.coords,
-      place.icon ? { icon: place.icon } : {}
-    ).addTo(map).bindPopup(place.name);
-
+    const marker = L.marker(place.coords, place.icon ? { icon: place.icon } : {})
+      .addTo(map)
+      .bindPopup(place.name);
     markers.push(marker);
   });
 
-  // Auto-fit map to all markers
   const group = L.featureGroup(markers);
   map.fitBounds(group.getBounds().pad(0.05));
 </script>
 
 </body>
 </html>
-
