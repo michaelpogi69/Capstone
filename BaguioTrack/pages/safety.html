@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Baguio Track | Safety Tips and Guidelines</title>
-  <link rel="stylesheet" href="home.css" />
+  <title>Baguio Track | Safety Tips</title>
+  <link rel="stylesheet" href="../assets/css/home.css" />
   <style>
-    /* GLOBAL STYLES (COPIED EXACTLY) */
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
@@ -14,24 +13,24 @@
       color: #2c2c2c;
     }
 
-header {
-  background: #145532;
-  color: #fff;
-  padding: 12px 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  /* STICKY NAV */
-  position: sticky;
-  top: 0;
-  z-index: 2000;
-}
+    /* HEADER */
+    header {
+      background: #145532;
+      color: white;
+      padding: 16px 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+    }
 
     .logo-area {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .logo-area img {
@@ -40,15 +39,20 @@ header {
       border-radius: 50%;
     }
 
-    header h2 {
+    .logo-area h2 {
       margin: 0;
       font-size: 22px;
       font-weight: 600;
+      line-height: 1;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
     }
 
     nav a {
       color: white;
-      margin-left: 25px;
       font-weight: 500;
       text-decoration: none;
       font-size: 16px;
@@ -59,13 +63,14 @@ header {
       color: #f2d7b5;
     }
 
+    /* HERO SECTION */
     .hero {
       background: linear-gradient(135deg, #9acf87, #6a9955);
       padding: 40px 45px;
-      color: white;
       text-align: center;
+      color: white;
       font-weight: 700;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
       margin-bottom: 30px;
     }
 
@@ -85,10 +90,10 @@ header {
       color: white;
       padding: 10px 25px;
       border-radius: 6px;
-      text-decoration: none;
       font-weight: 600;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
       display: inline-block;
     }
 
@@ -96,65 +101,64 @@ header {
       background: #1e7445;
     }
 
+    /* MAIN CONTENT */
     main {
       max-width: 1200px;
       margin: 0 auto 60px auto;
       padding: 0 30px;
     }
 
-    .jeep-gallery {
+    /* CARD GRID */
+    .safety-gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
       padding: 20px 0;
     }
 
-    .jeep-card {
+    .safety-card {
       background: white;
       border-radius: 14px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-      color: #154d2e;
-      text-decoration: none;
-      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      padding: 20px;
       transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
 
-    .jeep-card:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    .safety-card:hover {
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
       transform: translateY(-5px);
     }
 
-    .jeep-card h3 {
+    .safety-card h3 {
       margin: 0 0 12px 0;
       font-size: 22px;
       font-weight: 700;
       color: #2c5d3f;
     }
 
-    .jeep-card p {
+    .safety-card p {
       margin: 6px 0;
       font-size: 15px;
-      line-height: 1.4;
       font-weight: 500;
-      color: #000000;
+      line-height: 1.4;
+      color: #000;
     }
 
+    /* FOOTER */
     footer {
       background: #145532;
       color: white;
       padding: 16px 45px;
       text-align: center;
       font-weight: 500;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
     }
   </style>
 </head>
 
 <body>
-
   <!-- HEADER -->
   <header>
     <div class="logo-area">
@@ -180,11 +184,10 @@ header {
     </div>
   </section>
 
-  <!-- SAFETY TIP CARDS -->
+  <!-- SAFETY CARDS -->
   <main>
-    <section class="jeep-gallery">
-
-      <div class="jeep-card">
+    <section class="safety-gallery">
+      <div class="safety-card">
         <h3>General Safety & Personal Security</h3>
         <p><strong>Be Aware of Surroundings:</strong> Pickpocketing can occur in busy areas like Session Road and Burnham Park.</p>
         <p><strong>Well-Lit Areas:</strong> Avoid walking alone in dark or isolated streets.</p>
@@ -192,7 +195,7 @@ header {
         <p><strong>Avoid Scams:</strong> Watch out for overpriced tours and suspicious offers.</p>
       </div>
 
-      <div class="jeep-card">
+      <div class="safety-card">
         <h3>Compliance with Local Ordinances</h3>
         <p><strong>Follow Traffic Rules:</strong> Use crosswalks and respect pedestrian signals.</p>
         <p><strong>No Smoking:</strong> Smoking or vaping is prohibited in public areas unless designated.</p>
@@ -201,7 +204,7 @@ header {
         <p><strong>Respect Nature:</strong> Keep parks and heritage areas clean.</p>
       </div>
 
-      <div class="jeep-card">
+      <div class="safety-card">
         <h3>Emergency Contacts</h3>
         <p><strong>Directory Assistance:</strong> 114</p>
         <p><strong>Fire Department:</strong> 442-2222 / 160</p>
@@ -213,14 +216,11 @@ header {
         <p><strong>Highway Patrol:</strong> 442-4429</p>
         <p><strong>Emergency (911):</strong> Call for immediate help in case of emergencies</p>
       </div>
-
     </section>
   </main>
 
   <footer>
     <p>© 2025 Baguio Track | All Rights Reserved</p>
   </footer>
-
 </body>
 </html>
-
