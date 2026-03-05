@@ -19,7 +19,7 @@
       color: #2c2c2c;
     }
 
-    /* HEADER (same UI as Tourist Spots) */
+    /* HEADER */
     header {
       background: #145532;
       color: #fff;
@@ -48,7 +48,6 @@
       font-weight: 600;
     }
 
-    /* NAV */
     nav {
       display: flex;
       gap: 30px;
@@ -66,7 +65,7 @@
       color: #f2d7b5;
     }
 
-    /* HERO (same UI as Tourist Spots) */
+    /* HERO */
     .hero {
       background: linear-gradient(135deg, #9acf87, #6a9955);
       padding: 40px 45px;
@@ -104,17 +103,16 @@
       background: #1e7445;
     }
 
-    /* MAIN (same UI as Tourist Spots) */
+    /* MAIN */
     main {
       max-width: 1200px;
       margin: 0 auto 60px auto;
       padding: 20px 30px 30px 30px;
-      background-color: #ffffff;
+      background: transparent;
       border-radius: 12px;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
     }
 
-    /* Terminal Cards grid (same spacing style) */
+    /* TERMINAL CARDS GRID */
     .terminal-gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -122,19 +120,15 @@
       padding: 20px 0;
     }
 
-    /* Terminal Cards (styled like tourist cards) */
     .terminal-card {
-      background: white;
+      background: white; /* solid white */
       border-radius: 14px;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-      color: #154d2e;
-      text-decoration: none;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
-      cursor: pointer;
       padding: 20px;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      text-decoration: none;
+      color: #2c5d3f;
+      cursor: pointer;
     }
 
     .terminal-card:hover {
@@ -165,7 +159,18 @@
       line-height: 1.5;
     }
 
-    /* Button */
+    /* REMOVE UNDERLINES IN LINKS */
+    .terminal-card a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .terminal-card a:hover {
+      text-decoration: none;
+      color: #2c5d3f;
+    }
+
+    /* BUTTON */
     .locate-btn {
       background: #145532;
       color: white;
@@ -182,7 +187,7 @@
       background: #1b7045;
     }
 
-    /* Map */
+    /* MAP */
     #map {
       height: 550px;
       width: 100%;
@@ -191,7 +196,7 @@
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
     }
 
-    /* Info Panel */
+    /* INFO PANEL */
     #infoPanel {
       margin-top: 25px;
       background: white;
@@ -200,7 +205,7 @@
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     }
 
-    /* Pulse marker */
+    /* PULSE MARKER */
     .gpsPulse {
       width: 14px;
       height: 14px;
@@ -211,12 +216,20 @@
     }
 
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.6); }
-      70% { box-shadow: 0 0 0 12px rgba(30, 144, 255, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0); }
+      0% {
+        box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.6);
+      }
+
+      70% {
+        box-shadow: 0 0 0 12px rgba(30, 144, 255, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(30, 144, 255, 0);
+      }
     }
 
-    /* FOOTER (same as Tourist Spots) */
+    /* FOOTER */
     footer {
       background: #145532;
       color: white;
@@ -246,7 +259,7 @@
     </nav>
   </header>
 
-  <!-- HERO SECTION -->
+  <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
       <h1>Discover Baguio's Jeepney Terminals</h1>
@@ -257,7 +270,7 @@
 
   <main>
 
-    <!-- TERMINAL SELECTION GRID -->
+    <!-- TERMINAL CARDS GRID -->
     <div class="terminal-gallery">
 
       <a href="#" class="terminal-card" onclick="selectTerminal('F. Calderon Terminal')">
@@ -357,10 +370,8 @@
 
     document.getElementById("locateBtn").onclick = () => {
       if (!navigator.geolocation) return alert("Geolocation not supported.");
-
       navigator.geolocation.watchPosition(pos => {
         const { latitude, longitude } = pos.coords;
-
         if (!userMarker) {
           userMarker = L.marker([latitude, longitude], {
             icon: L.divIcon({
@@ -372,7 +383,6 @@
         } else {
           userMarker.setLatLng([latitude, longitude]);
         }
-
         map.setView([latitude, longitude], 15);
       }, () => {
         alert("Unable to retrieve location. Please enable location services.");
@@ -391,11 +401,7 @@
 
     function selectTerminal(terminal) {
       const { terminalCoords, spots } = data[terminal];
-
-      if (!userMarker) {
-        alert("Please enable location first.");
-        return;
-      }
+      if (!userMarker) return alert("Please enable location first.");
 
       clearMapExceptUser();
       map.setView(terminalCoords, 15);
@@ -426,15 +432,12 @@
         .then(res => res.json())
         .then(res => {
           const coords = res.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-
           if (routeLayer) map.removeLayer(routeLayer);
-
           routeLayer = L.polyline(coords, {
             color: "#145532",
             weight: 6,
             opacity: 0.9,
           }).addTo(map);
-
           map.fitBounds(routeLayer.getBounds(), { padding: [40, 40] });
         })
         .catch(() => alert("Failed to generate walking route."));
