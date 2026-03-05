@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Baguio Track | Tourist Spots</title>
-  <!-- Corrected path for CSS -->
   <link rel="stylesheet" href="../assets/css/home.css" />
+
   <style>
     body {
       margin: 0;
@@ -14,21 +15,21 @@
       color: #2c2c2c;
     }
 
-    /* Header Styles */
+    /* Header */
     header {
-      background: #145532; /* Green background */
+      background: #145532;
       color: #fff;
-      padding: 16px 45px; /* Adjusted for About page consistency */
+      padding: 16px 45px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added shadow for depth */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .logo-area {
       display: flex;
       align-items: center;
-      gap: 10px; /* Adjusted for About page consistency */
+      gap: 10px;
     }
 
     .logo-area img {
@@ -43,10 +44,9 @@
       font-weight: 600;
     }
 
-    /* Navigation Styles */
     nav {
       display: flex;
-      gap: 30px; /* Adjusted for About page spacing */
+      gap: 30px;
     }
 
     nav a {
@@ -99,17 +99,15 @@
       background: #1e7445;
     }
 
-    /* Main Content */
+    /* Main content */
     main {
       max-width: 1200px;
       margin: 0 auto 60px auto;
       padding: 0 30px;
-      background-color: #ffffff; /* White background for consistency */
-      border-radius: 12px; /* Smooth corners */
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+      background: transparent;
     }
 
-    /* Gallery Grid */
+    /* Tourist Gallery Grid */
     .tourist-gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -117,13 +115,13 @@
       padding: 20px 0;
     }
 
-    /* Tourist Card Styles */
+    /* Tourist Card */
     .tourist-card {
-      background: white;
+      background: white; /* solid white */
       border-radius: 14px;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-      color: #154d2e;
       text-decoration: none;
+      color: #2c5d3f;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -160,6 +158,17 @@
       color: #000;
     }
 
+    /* Remove underlines for links inside cards */
+    .tourist-card a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .tourist-card a:hover {
+      text-decoration: none;
+      color: #2c5d3f;
+    }
+
     /* Footer */
     footer {
       background: #145532;
@@ -174,7 +183,7 @@
 
 <body>
 
-  <!-- HEADER -->
+  <!-- Header -->
   <header>
     <div class="logo-area">
       <img src="../assets/images/user_8801434.png" alt="User Profile" />
@@ -183,14 +192,14 @@
 
     <nav>
       <a href="home.html">Home</a>
-      <a href="tourist.html" class="active">Tourist Spots</a> <!-- active class -->
+      <a href="tourist.html" class="active">Tourist Spots</a>
       <a href="jeepterminal.html">Terminals</a>
       <a href="safety.html">Safety Tips</a>
       <a href="about.html">About</a>
     </nav>
   </header>
 
-  <!-- HERO -->
+  <!-- Hero Section -->
   <section class="hero">
     <div class="hero-content">
       <h1>Explore Baguio’s Top Tourist Spots</h1>
@@ -199,7 +208,7 @@
     </div>
   </section>
 
-  <!-- TOURIST SPOTS -->
+  <!-- Tourist Gallery -->
   <main>
     <section class="tourist-gallery">
 
