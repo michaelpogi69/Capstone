@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Baguio Track | About</title>
-  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="../assets/css/home.css" />
   <style>
     body {
       margin: 0;
@@ -13,24 +13,24 @@
       color: #2c2c2c;
     }
 
+    /* HEADER */
     header {
-  background: #145532;
-  color: #fff;
-  padding: 12px 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  /* STICKY NAV */
-  position: sticky;
-  top: 0;
-  z-index: 2000;
-}
+      background: #145532;
+      color: #fff;
+      padding: 16px 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+    }
 
     .logo-area {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .logo-area img {
@@ -39,15 +39,20 @@
       border-radius: 50%;
     }
 
-    header h2 {
+    .logo-area h2 {
       margin: 0;
       font-size: 22px;
       font-weight: 600;
+      line-height: 1;
+    }
+
+    nav {
+      display: flex;
+      gap: 30px;
     }
 
     nav a {
       color: white;
-      margin-left: 25px;
       font-weight: 500;
       text-decoration: none;
       font-size: 16px;
@@ -58,13 +63,14 @@
       color: #f2d7b5;
     }
 
+    /* HERO SECTION */
     .hero {
       background: linear-gradient(135deg, #9acf87, #6a9955);
       padding: 40px 45px;
       color: white;
       text-align: center;
       font-weight: 700;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
       margin-bottom: 30px;
     }
 
@@ -86,7 +92,7 @@
       border-radius: 6px;
       text-decoration: none;
       font-weight: 600;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
       transition: background-color 0.3s ease;
       display: inline-block;
     }
@@ -101,17 +107,19 @@
       padding: 0 30px;
     }
 
-    .jeep-gallery {
+    /* CARDS GRID */
+    .about-gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 30px;
       padding: 20px 0;
     }
 
-    .jeep-card {
-      background: white;
+    /* WHITE CARDS LIKE TOURIST SPOTS */
+    .about-card {
+      background: white; /* solid white */
       border-radius: 14px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
       color: #154d2e;
       text-decoration: none;
       overflow: hidden;
@@ -121,33 +129,33 @@
       transition: box-shadow 0.3s ease, transform 0.3s ease;
     }
 
-    .jeep-card:hover {
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    .about-card:hover {
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
       transform: translateY(-5px);
     }
 
-    .jeep-card h3 {
+    .about-card h3 {
       margin: 0 0 12px 0;
       font-size: 22px;
       font-weight: 700;
       color: #2c5d3f;
     }
 
-    .jeep-card p {
+    .about-card p {
       margin: 6px 0;
       font-size: 15px;
       line-height: 1.4;
       font-weight: 500;
-      color: #000000;
+      color: #000;
     }
 
-    /* ✅ FEEDBACK UI (MATCHES YOUR CARD STYLE) */
+    /* FEEDBACK SECTION */
     .feedback-section {
       background: white;
       border-radius: 14px;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
       padding: 20px;
-      margin-top: 10px;
+      margin-top: 30px;
     }
 
     .feedback-section h3 {
@@ -195,7 +203,7 @@
       padding: 16px 45px;
       text-align: center;
       font-weight: 500;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
     }
   </style>
 </head>
@@ -206,7 +214,6 @@
       <img src="../assets/images/user_8801434.png" alt="User Profile" />
       <h2>Baguio Track</h2>
     </div>
-
     <nav>
       <a href="home.html">Home</a>
       <a href="tourist.html">Tourist Spots</a>
@@ -225,33 +232,27 @@
   </section>
 
   <main>
-    <!-- ✅ Grid stays ONLY for the 3 cards -->
-    <section class="jeep-gallery">
-      <div class="jeep-card">
+    <section class="about-gallery">
+      <div class="about-card">
         <h3>About Us</h3>
         <p>Baguio Track is your ultimate digital guide to exploring Baguio City. We provide tourists and locals with information on attractions, jeepney routes, restaurants, and cultural sites to make exploring the City of Pines easy and fun.</p>
       </div>
-
-      <div class="jeep-card">
+      <div class="about-card">
         <h3>Our Mission</h3>
         <p>To provide an easy-to-use, reliable, and up-to-date platform that helps visitors explore Baguio efficiently while promoting local culture and tourism.</p>
       </div>
-
-      <div class="jeep-card">
+      <div class="about-card">
         <h3>Our Vision</h3>
         <p>To become the go-to digital guide for Baguio City, empowering tourists and locals to discover hidden gems and navigate the city seamlessly.</p>
       </div>
     </section>
 
-    <!-- ✅ Feedback section is OUTSIDE the grid -->
     <section class="feedback-section">
       <h3>Leave a Feedback</h3>
-
       <form id="feedbackForm">
         <textarea id="fbMessage" rows="4" placeholder="Write your feedback here..." required></textarea>
         <button type="submit">Submit</button>
       </form>
-
       <p id="fbStatus"></p>
     </section>
   </main>
@@ -259,49 +260,5 @@
   <footer>
     <p>© 2025 Baguio Track | All Rights Reserved</p>
   </footer>
-
-  <!-- ✅ Firebase script moved here so elements exist first -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDPFnyJC66A-HQC3dKCQQ4SobAFRezx7fU",
-      authDomain: "baguio-track-c702f.firebaseapp.com",
-      projectId: "baguio-track-c702f",
-      storageBucket: "baguio-track-c702f.firebasestorage.app",
-      messagingSenderId: "27598181344",
-      appId: "1:27598181344:web:97bf7dd2a32dbfe14ed185"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const form = document.getElementById("feedbackForm");
-    const statusEl = document.getElementById("fbStatus");
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const message = document.getElementById("fbMessage").value.trim();
-      if (!message) return;
-
-      statusEl.textContent = "Submitting...";
-
-      try {
-        await addDoc(collection(db, "feedback"), {
-          message,
-          createdAt: serverTimestamp()
-        });
-
-        statusEl.textContent = "✅ Thanks! Your feedback was sent.";
-        form.reset();
-      } catch (err) {
-        console.error(err);
-        statusEl.textContent = "❌ Failed to submit. Please try again.";
-      }
-    });
-  </script>
 </body>
 </html>
-
