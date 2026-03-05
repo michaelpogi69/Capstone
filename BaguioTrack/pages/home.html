@@ -1,147 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Baguio Track | Home</title>
-  <link rel="stylesheet" href="../assets/css/home.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Baguio Track | Home</title>
 
-  <style>
-    a,
-    a:hover,
-    a:focus,
-    a:active {
-      text-decoration: none !important;
-      color: inherit;
-    }
+<link rel="stylesheet" href="../assets/css/home.css">
 
-    body {
-      background: url("../assets/images/123.png") no-repeat center center fixed;
-      background-size: cover;
-    }
+<style>
 
-    /* Announcement styling */
-    .announcement-section {
-      display: none;
-      padding: 20px;
-      max-width: 900px;
-      margin: 25px auto;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+a,
+a:hover,
+a:focus,
+a:active{
+  text-decoration:none !important;
+  color:inherit;
+}
 
-    .announcement-section h2 {
-      margin-top: 0;
-      color: #145532;
-    }
-  </style>
+body{
+  background:url("../assets/images/123.png") no-repeat center center fixed;
+  background-size:cover;
+}
+
+/* ===== NAVBAR SAME AS TOURIST PAGE ===== */
+
+header{
+  background:#145532;
+  color:#fff;
+  padding:16px 45px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo-area img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+}
+
+header h2{
+  margin:0;
+  font-size:22px;
+  font-weight:600;
+}
+
+nav{
+  display:flex;
+  gap:30px;
+}
+
+nav a{
+  color:white;
+  font-weight:500;
+  text-decoration:none;
+  font-size:16px;
+}
+
+nav a.active,
+nav a:hover{
+  color:#f2d7b5;
+}
+
+/* ===== Announcement styling ===== */
+
+.announcement-section{
+  display:none;
+  padding:20px;
+  max-width:900px;
+  margin:25px auto;
+  background:#ffffff;
+  border-radius:12px;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.announcement-section h2{
+  margin-top:0;
+  color:#145532;
+}
+
+</style>
 </head>
 
 <body>
 
 <script>
-  if (localStorage.getItem("isLoggedIn") !== "true") {
-    window.location.href = "index.html";
-  }
+if(localStorage.getItem("isLoggedIn") !== "true"){
+  window.location.href="index.html";
+}
 </script>
 
 <header>
-  <div class="logo-area" id="profileArea">
-    <img src="../assets/images/user_8801434.png" id="profileImage">
-    <h2 id="userName">Baguio Track</h2>
-    <input type="file" id="upload-photo" accept="image/*" style="display:none;">
 
-    <div class="profile-dropdown" id="profileDropdown">
-      <ul>
-        <li><a href="#" id="editProfile">✏️ Edit Profile</a></li>
-        <li><a href="#" id="logoutBtn">🚪 Logout</a></li>
-      </ul>
-    </div>
-  </div>
+<div class="logo-area" id="profileArea">
+<img src="../assets/images/user_8801434.png" id="profileImage">
+<h2 id="userName">Baguio Track</h2>
 
-  <nav>
-    <a href="home.html">Home</a>
-    <a href="tourist.html">Tourist Spots</a>
-    <a href="jeepterminal.html">Terminals</a>
-    <a href="safety.html">Safety Tips</a>
-    <a href="about.html">About</a>
-  </nav>
+<input type="file" id="upload-photo" accept="image/*" style="display:none;">
+
+<div class="profile-dropdown" id="profileDropdown">
+<ul>
+<li><a href="#" id="editProfile">✏️ Edit Profile</a></li>
+<li><a href="#" id="logoutBtn">🚪 Logout</a></li>
+</ul>
+</div>
+</div>
+
+<nav>
+<a href="home.html" class="active">Home</a>
+<a href="tourist.html">Tourist Spots</a>
+<a href="jeepterminal.html">Terminals</a>
+<a href="safety.html">Safety Tips</a>
+<a href="about.html">About</a>
+</nav>
+
 </header>
 
 <section class="hero">
-  <div class="hero-content">
-    <h1 id="welcome-message">Welcome to Baguio Track</h1>
-    <p>Discover routes, fares, and destinations across Baguio City.</p>
-  </div>
+<div class="hero-content">
+<h1 id="welcome-message">Welcome to Baguio Track</h1>
+<p>Discover routes, fares, and destinations across Baguio City.</p>
+</div>
 </section>
 
 <section class="features">
 
-  <a href="tourist.html" class="feature-card">
-    <img src="../assets/images/tourimage.jpg">
-    <h3>Tourist Spots</h3>
-    <p>Must-see attractions around Baguio City.</p>
-  </a>
+<a href="tourist.html" class="feature-card">
+<img src="../assets/images/tourimage.jpg">
+<h3>Tourist Spots</h3>
+<p>Must-see attractions around Baguio City.</p>
+</a>
 
-  <a href="jeepterminal.html" class="feature-card">
-    <img src="../assets/images/jeepterminal.png">
-    <h3>Jeepney Terminals</h3>
-    <p>Locate jeepney terminals and routes.</p>
-  </a>
+<a href="jeepterminal.html" class="feature-card">
+<img src="../assets/images/jeepterminal.png">
+<h3>Jeepney Terminals</h3>
+<p>Locate jeepney terminals and routes.</p>
+</a>
 
-  <a href="safety.html" class="feature-card">
-    <img src="../assets/images/safety.jpg">
-    <h3>Safety & Contacts</h3>
-    <p>Emergency tips and help numbers.</p>
-  </a>
+<a href="safety.html" class="feature-card">
+<img src="../assets/images/safety.jpg">
+<h3>Safety & Contacts</h3>
+<p>Emergency tips and help numbers.</p>
+</a>
 
 </section>
 
-<!-- ✅ SITE ANNOUNCEMENT BELOW FEATURES -->
+<!-- Announcement -->
 <section id="announcementSection" class="announcement-section">
-  <h2>📢 Announcement</h2>
-  <p id="announcementText"></p>
+<h2>📢 Announcement</h2>
+<p id="announcementText"></p>
 </section>
 
 <footer>
-  <p>© 2025 Baguio Track | All Rights Reserved</p>
+<p>© 2025 Baguio Track | All Rights Reserved</p>
 </footer>
 
 <script>
-  // PROFILE LOAD
-  const storedName = localStorage.getItem("baguioTrackUserName");
-  if (storedName) document.getElementById("userName").textContent = storedName;
 
-  const profileImage = document.getElementById("profileImage");
-  const savedImage = localStorage.getItem("baguioTrackProfileImage");
-  if (savedImage) profileImage.src = savedImage;
+// PROFILE LOAD
+const storedName = localStorage.getItem("baguioTrackUserName");
+if(storedName) document.getElementById("userName").textContent = storedName;
 
-  const dropdown = document.getElementById("profileDropdown");
+const profileImage = document.getElementById("profileImage");
+const savedImage = localStorage.getItem("baguioTrackProfileImage");
+if(savedImage) profileImage.src = savedImage;
 
-  document.getElementById("profileArea").addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("active");
-  });
+const dropdown = document.getElementById("profileDropdown");
 
-  document.addEventListener("click", () => dropdown.classList.remove("active"));
+document.getElementById("profileArea").addEventListener("click",(e)=>{
+e.stopPropagation();
+dropdown.classList.toggle("active");
+});
 
-  document.getElementById("logoutBtn").addEventListener("click", (e) => {
-    e.preventDefault();
-    localStorage.removeItem("isLoggedIn");
-    alert("You have been logged out.");
-    window.location.href = "index.html";
-  });
+document.addEventListener("click",()=>dropdown.classList.remove("active"));
 
-  // ✅ LOAD ANNOUNCEMENT FROM ADMIN
-  const announcement = localStorage.getItem("siteAnnouncement");
-  if (announcement && announcement.trim() !== "") {
-    document.getElementById("announcementText").textContent = announcement;
-    document.getElementById("announcementSection").style.display = "block";
-  }
+document.getElementById("logoutBtn").addEventListener("click",(e)=>{
+e.preventDefault();
+localStorage.removeItem("isLoggedIn");
+alert("You have been logged out.");
+window.location.href="index.html";
+});
+
+// Announcement
+const announcement = localStorage.getItem("siteAnnouncement");
+
+if(announcement && announcement.trim() !== ""){
+document.getElementById("announcementText").textContent = announcement;
+document.getElementById("announcementSection").style.display="block";
+}
+
 </script>
 
 </body>
 </html>
-  
-
