@@ -7,33 +7,37 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 <body>
-  <section id="login-section">
+ 
+ <section id="login-section">
     <div class="login-container">
-      <img src="../assets/images/logo.png" alt="Baguio Track Logo" class="logo" />
-      <h1>Create Account</h1>
+<img src="../assets/images/logo.png" alt="Baguio Track Logo" class="logo" />
 
-      <form id="signupForm">
-        <label>Email Address</label>
-        <input type="email" id="email" required />
+<h1>Baguio Track</h1>
+<p>Create your account to start exploring.</p>
 
-        <label>Password</label>
-        <input type="password" id="password" required />
+<form id="signupForm">
+  <label>Email Address</label>
+  <input type="email" id="email" placeholder="Enter your email" required />
 
-        <button type="submit">Sign Up</button>
-        <p class="register-link">
-          Already have an account?
-          <a href="index.html">Sign In</a>
-          <br>
-        <a href="adminlogin.html">Sign In as Admin</a>
-         </p>
-      </form>
+  <label>Password</label>
+  <input type="password" id="password" placeholder="Enter your password" required />
+
+  <button type="submit">Sign Up</button>
+
+  <p class="register-link">
+    Already have an account? <a href="index.html">Sign In</a>
+    <br />
+    <a href="adminlogin.html">Sign In as Admin</a>
+  </p>
+</form>
     </div>
   </section>
 
-  <!-- 🔥 FIREBASE SIGNUP -->
+  <!-- 🔥 FIREBASE SIGNUP (GMAIL ONLY) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword }
+      from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDPFnyJC66A-HQC3dKCQQ4SobAFRezx7fU",
@@ -50,15 +54,23 @@
     document.getElementById("signupForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      // ✅ Gmail only
+      if (!email.endsWith("@gmail.com")) {
+        alert("❌ Only Gmail accounts (@gmail.com) are allowed.");
+        return;
+      }
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert("✅ Account created successfully!");
-        window.location.href = "home.html";
+        alert("✅ Account created successfully! You can now sign in.");
+        window.location.href = "index.html"; // go to login page
       } catch (error) {
-        alert("❌ " + error.message);
+        // show exact firebase error code (helpful)
+        alert("❌ " + error.code + " — " + error.message);
+        console.log(error);
       }
     });
   </script>
