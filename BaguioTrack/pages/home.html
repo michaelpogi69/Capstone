@@ -156,45 +156,61 @@ if(localStorage.getItem("isLoggedIn") !== "true"){
 <section id="announcementSection" class="announcement-section">
 <h2>📢 Announcement</h2>
 <p id="announcementText"></p>
+<button id="toggleAnnouncementsBtn" class="back-btn" style="margin-top:12px; border:none; cursor:pointer;">View Previous Announcements</button>
+<div id="announcementHistory" style="display:none; margin-top:14px;"></div>
 </section>
 
 <footer>
 <p>© 2025 Baguio Track | All Rights Reserved</p>
 </footer>
 
+<script src="../assets/js/profile-tabs.js"></script>
+
 <script>
 
-// PROFILE LOAD
-const storedName = localStorage.getItem("baguioTrackUserName");
-if(storedName) document.getElementById("userName").textContent = storedName;
-
-const profileImage = document.getElementById("profileImage");
-const savedImage = localStorage.getItem("baguioTrackProfileImage");
-if(savedImage) profileImage.src = savedImage;
-
-const dropdown = document.getElementById("profileDropdown");
-
-document.getElementById("profileArea").addEventListener("click",(e)=>{
-e.stopPropagation();
-dropdown.classList.toggle("active");
-});
-
-document.addEventListener("click",()=>dropdown.classList.remove("active"));
-
-document.getElementById("logoutBtn").addEventListener("click",(e)=>{
-e.preventDefault();
-localStorage.removeItem("isLoggedIn");
-alert("You have been logged out.");
-window.location.href="index.html";
-});
-
 // Announcement
-const announcement = localStorage.getItem("siteAnnouncement");
+const announcementSection = document.getElementById("announcementSection");
+const announcementText = document.getElementById("announcementText");
+const announcementHistory = document.getElementById("announcementHistory");
+const toggleAnnouncementsBtn = document.getElementById("toggleAnnouncementsBtn");
 
-if(announcement && announcement.trim() !== ""){
-document.getElementById("announcementText").textContent = announcement;
-document.getElementById("announcementSection").style.display="block";
+let announcements = [];
+
+try {
+  announcements = JSON.parse(localStorage.getItem("siteAnnouncements") || "[]");
+} catch (error) {
+  announcements = [];
 }
+
+if ((!announcements || announcements.length === 0) && localStorage.getItem("siteAnnouncement")) {
+  announcements = [{
+    message: localStorage.getItem("siteAnnouncement"),
+    createdAt: Date.now()
+  }];
+}
+
+if (announcements.length > 0) {
+  const latest = announcements[0];
+  const latestDate = new Date(latest.createdAt || Date.now()).toLocaleString();
+  announcementText.textContent = `${latest.message} (${latestDate})`;
+
+  announcementHistory.innerHTML = announcements
+    .slice(1)
+    .map((item) => `<p style="margin:8px 0; color:#2c2c2c;">• ${item.message} <span style="font-size:13px; color:#666;">(${new Date(item.createdAt || Date.now()).toLocaleString()})</span></p>`)
+    .join("");
+
+  if (announcements.length <= 1) {
+    toggleAnnouncementsBtn.style.display = "none";
+  }
+
+  announcementSection.style.display = "block";
+}
+
+toggleAnnouncementsBtn.addEventListener("click", () => {
+  const isHidden = announcementHistory.style.display === "none";
+  announcementHistory.style.display = isHidden ? "block" : "none";
+  toggleAnnouncementsBtn.textContent = isHidden ? "Hide Previous Announcements" : "View Previous Announcements";
+});
 
 </script>
 

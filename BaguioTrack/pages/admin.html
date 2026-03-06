@@ -48,7 +48,7 @@
 
       <article class="panel">
         <h2>Recent Activity</h2>
-        <ul class="activity-list">
+        <ul class="activity-list" id="recentActivityList">
           <li>
             Updated terminal fare guide.
             <span class="activity-time">Today, 9:40 AM</span>
@@ -181,14 +181,55 @@
       });
     });
 
-    // Announcement (your current code)
+    // Announcement
     const announcementInput = document.getElementById("announcementInput");
     const saveStatus = document.getElementById("saveStatus");
+    const recentActivityList = document.getElementById("recentActivityList");
 
-    announcementInput.value = localStorage.getItem("siteAnnouncement") || "";
+    let siteAnnouncements = [];
+    try {
+      siteAnnouncements = JSON.parse(localStorage.getItem("siteAnnouncements") || "[]");
+    } catch (error) {
+      siteAnnouncements = [];
+    }
+
+    if (siteAnnouncements.length > 0) {
+      announcementInput.value = siteAnnouncements[0].message || "";
+    } else {
+      announcementInput.value = localStorage.getItem("siteAnnouncement") || "";
+    }
+
+    function prependActivity(text, createdAt) {
+      const li = document.createElement("li");
+      li.textContent = text;
+
+      const timeTag = document.createElement("span");
+      timeTag.className = "activity-time";
+      timeTag.textContent = new Date(createdAt).toLocaleString();
+
+      li.appendChild(timeTag);
+      recentActivityList.prepend(li);
+    }
 
     document.getElementById("saveAnnouncementBtn").addEventListener("click", () => {
-      localStorage.setItem("siteAnnouncement", announcementInput.value.trim());
+      const message = announcementInput.value.trim();
+      if (!message) {
+        saveStatus.textContent = "Please write an announcement first.";
+        return;
+      }
+
+      const newAnnouncement = {
+        message,
+        createdAt: Date.now(),
+        createdBy: localStorage.getItem("adminEmail") || "admin"
+      };
+
+      siteAnnouncements.unshift(newAnnouncement);
+      localStorage.setItem("siteAnnouncements", JSON.stringify(siteAnnouncements));
+      localStorage.setItem("siteAnnouncement", message);
+
+      prependActivity(`Posted new announcement: "${message}"`, newAnnouncement.createdAt);
+
       saveStatus.textContent = "Announcement saved successfully.";
       setTimeout(() => {
         saveStatus.textContent = "";

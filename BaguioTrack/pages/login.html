@@ -22,6 +22,8 @@
 
         <button type="submit">Sign In</button>
 
+        <button type="button" id="googleSignInBtn" style="margin-top:10px; background:#ffffff; color:#154d2e; border:1px solid #cfcfcf;">Continue with Google</button>
+
         <p class="register-link">
           Don’t have an account?
           <a href="signup.html">Sign Up</a>
@@ -33,7 +35,7 @@
   <!-- 🔥 FIREBASE LOGIN -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDPFnyJC66A-HQC3dKCQQ4SobAFRezx7fU",
@@ -47,18 +49,42 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const strongPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = document.getElementById("email").value;
+      const email = document.getElementById("email").value.trim().toLowerCase();
       const password = document.getElementById("password").value;
+
+      if (!emailRegex.test(email)) {
+        alert("❌ Please enter a valid email address.");
+        return;
+      }
+
+      if (!strongPasswordRegex.test(password)) {
+        alert("❌ Password must be at least 8 characters and include letters and numbers.");
+        return;
+      }
 
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        alert("✅ Login successful!");
+        localStorage.setItem("isLoggedIn", "true");
         window.location.href = "home.html";
       } catch (error) {
-        alert("❌ " + error.message);
+        alert("❌ " + error.code + " — " + error.message);
+      }
+    });
+
+    document.getElementById("googleSignInBtn").addEventListener("click", async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "home.html";
+      } catch (error) {
+        alert("❌ " + error.code + " — " + error.message);
       }
     });
   </script>
