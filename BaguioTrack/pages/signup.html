@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../assets/css/style.css" />
 </head>
 <body>
- 
+
  <section id="login-section">
     <div class="login-container">
 <img src="../assets/images/logo.png" alt="Baguio Track Logo" class="logo" />
@@ -24,6 +24,8 @@
 
   <button type="submit">Sign Up</button>
 
+  <button type="button" id="googleSignUpBtn" style="margin-top:10px; background:#ffffff; color:#154d2e; border:1px solid #cfcfcf;">Sign Up with Google</button>
+
   <p class="register-link">
     Already have an account? <a href="index.html">Sign In</a>
     <br />
@@ -36,7 +38,7 @@
   <!-- 🔥 FIREBASE SIGNUP (GMAIL ONLY) -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword }
+    import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup }
       from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
     const firebaseConfig = {
@@ -51,26 +53,42 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    const strongPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
     document.getElementById("signupForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+      const email = document.getElementById("email").value.trim().toLowerCase();
+      const password = document.getElementById("password").value;
 
-      // ✅ Gmail only
-      if (!email.endsWith("@gmail.com")) {
-        alert("❌ Only Gmail accounts (@gmail.com) are allowed.");
+      if (!emailRegex.test(email)) {
+        alert("❌ Please enter a valid email address.");
+        return;
+      }
+
+      if (!strongPasswordRegex.test(password)) {
+        alert("❌ Password must be at least 8 characters and include letters and numbers.");
         return;
       }
 
       try {
         await createUserWithEmailAndPassword(auth, email, password);
         alert("✅ Account created successfully! You can now sign in.");
-        window.location.href = "index.html"; // go to login page
+        window.location.href = "index.html";
       } catch (error) {
-        // show exact firebase error code (helpful)
         alert("❌ " + error.code + " — " + error.message);
-        console.log(error);
+      }
+    });
+
+    document.getElementById("googleSignUpBtn").addEventListener("click", async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.href = "home.html";
+      } catch (error) {
+        alert("❌ " + error.code + " — " + error.message);
       }
     });
   </script>
