@@ -22,7 +22,7 @@ body{
   background-size:cover;
 }
 
-/* ===== NAVBAR SAME AS TOURIST PAGE ===== */
+/* ===== NAVBAR ===== */
 
 header{
   background:#145532;
@@ -60,7 +60,6 @@ nav{
 nav a{
   color:white;
   font-weight:500;
-  text-decoration:none;
   font-size:16px;
 }
 
@@ -84,6 +83,55 @@ nav a:hover{
 .announcement-section h2{
   margin-top:0;
   color:#145532;
+}
+
+.announcement-content{
+  max-height:300px;
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:10px;
+  border:1px solid #e0e0e0;
+  border-radius:8px;
+  background:#f9f9f9;
+  margin:10px 0;
+  word-wrap:break-word;
+  white-space:normal;
+}
+
+.announcement-history-item{
+  margin-bottom:15px;
+  padding:10px;
+  border-left:3px solid #145532;
+  background:#f8f8f8;
+  border-radius:4px;
+  min-height:80px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.announcement-history-item .message{
+  margin-bottom:5px;
+  line-height:1.4;
+  word-wrap:break-word;
+}
+
+.announcement-history-item .timestamp{
+  font-size:12px;
+  color:#666;
+  font-style:italic;
+}
+
+.announcement-history-item .show-more{
+  color:#145532;
+  cursor:pointer;
+  font-weight:500;
+  margin-top:5px;
+  display:inline-block;
+}
+
+.announcement-history-item .show-more:hover{
+  text-decoration:underline;
 }
 
 </style>
@@ -154,10 +202,8 @@ if(localStorage.getItem("isLoggedIn") !== "true"){
 
 <!-- Announcement -->
 <section id="announcementSection" class="announcement-section">
-<h2>📢 Announcement</h2>
-<p id="announcementText"></p>
-<button id="toggleAnnouncementsBtn" class="back-btn" style="margin-top:12px; border:none; cursor:pointer;">View Previous Announcements</button>
-<div id="announcementHistory" style="display:none; margin-top:14px;"></div>
+<h2>📢 Announcements</h2>
+<div class="announcement-content" id="announcementText"></div>
 </section>
 
 <footer>
@@ -168,49 +214,128 @@ if(localStorage.getItem("isLoggedIn") !== "true"){
 
 <script>
 
-// Announcement
-const announcementSection = document.getElementById("announcementSection");
-const announcementText = document.getElementById("announcementText");
-const announcementHistory = document.getElementById("announcementHistory");
-const toggleAnnouncementsBtn = document.getElementById("toggleAnnouncementsBtn");
+// USER PROFILE
+document.addEventListener('DOMContentLoaded', function(){
 
-let announcements = [];
+const isLoggedIn = localStorage.getItem("isLoggedIn");
+const userEmail = localStorage.getItem("userEmail");
+const isGuest = localStorage.getItem("isGuest");
 
-try {
-  announcements = JSON.parse(localStorage.getItem("siteAnnouncements") || "[]");
-} catch (error) {
-  announcements = [];
+const userNameElement = document.getElementById("userName");
+const welcomeMessage = document.getElementById("welcome-message");
+const profileImage = document.getElementById("profileImage");
+
+if(isLoggedIn==="true"){
+
+if(isGuest==="true"){
+userNameElement.textContent="Guest User";
+welcomeMessage.textContent="Welcome to Baguio Track, Guest!";
 }
 
-if ((!announcements || announcements.length === 0) && localStorage.getItem("siteAnnouncement")) {
-  announcements = [{
-    message: localStorage.getItem("siteAnnouncement"),
-    createdAt: Date.now()
-  }];
+else if(userEmail){
+const username=userEmail.split('@')[0];
+userNameElement.textContent=username;
+welcomeMessage.textContent=`Welcome to Baguio Track, ${username}!`;
 }
 
-if (announcements.length > 0) {
-  const latest = announcements[0];
-  const latestDate = new Date(latest.createdAt || Date.now()).toLocaleString();
-  announcementText.textContent = `${latest.message} (${latestDate})`;
-
-  announcementHistory.innerHTML = announcements
-    .slice(1)
-    .map((item) => `<p style="margin:8px 0; color:#2c2c2c;">• ${item.message} <span style="font-size:13px; color:#666;">(${new Date(item.createdAt || Date.now()).toLocaleString()})</span></p>`)
-    .join("");
-
-  if (announcements.length <= 1) {
-    toggleAnnouncementsBtn.style.display = "none";
-  }
-
-  announcementSection.style.display = "block";
+else{
+userNameElement.textContent="User";
+welcomeMessage.textContent="Welcome to Baguio Track!";
 }
 
-toggleAnnouncementsBtn.addEventListener("click", () => {
-  const isHidden = announcementHistory.style.display === "none";
-  announcementHistory.style.display = isHidden ? "block" : "none";
-  toggleAnnouncementsBtn.textContent = isHidden ? "Hide Previous Announcements" : "View Previous Announcements";
+}
+
+else{
+window.location.href="index.html";
+}
+
 });
+
+// LOGOUT
+document.getElementById("logoutBtn").addEventListener("click",function(e){
+e.preventDefault();
+localStorage.removeItem("isLoggedIn");
+localStorage.removeItem("userEmail");
+localStorage.removeItem("isGuest");
+window.location.href="index.html";
+});
+
+
+// ANNOUNCEMENTS
+const announcementSection=document.getElementById("announcementSection");
+const announcementText=document.getElementById("announcementText");
+
+let announcements=[];
+
+try{
+announcements=JSON.parse(localStorage.getItem("siteAnnouncements")||"[]");
+}catch{
+announcements=[];
+}
+
+if((!announcements||announcements.length===0)&&localStorage.getItem("siteAnnouncement")){
+announcements=[{
+message:localStorage.getItem("siteAnnouncement"),
+createdAt:Date.now()
+}];
+}
+
+// TEMPORARY: Add test announcement if none exist
+if(announcements.length === 0){
+announcements = [{
+message: "Welcome to Baguio Track! This is our new platform for discovering routes and destinations. We hope you enjoy exploring Baguio City with our comprehensive guide to tourist spots, jeepney terminals, and safety tips. Please feel free to contact us if you have any questions or feedback.",
+createdAt: Date.now()
+}];
+}
+
+if(announcements.length>0){
+
+announcementText.innerHTML=announcements
+.map((item,index)=>{
+
+const fullMessage = item.message;
+const sentences = fullMessage.split(/[.!?]+/).filter(s => s.trim().length > 0);
+const isLong = sentences.length > 2;
+const truncatedMessage = isLong ? sentences.slice(0, 2).join('. ') + '.' : fullMessage;
+
+return `
+
+<div class="announcement-history-item" style="${index===0?'border-left-color:#ff6b35;':''}">
+<div class="message">
+<span class="message-content">${truncatedMessage}</span>
+${isLong ? `<span class="show-more" data-full="${fullMessage.replace(/"/g, '&quot;')}">Show more</span>` : ''}
+</div>
+<div class="timestamp">Posted on: ${new Date(item.createdAt||Date.now()).toLocaleString()}</div>
+</div>
+
+`;
+
+}).join("");
+
+announcementSection.style.display="block";
+
+// Add event listeners for show more functionality
+setTimeout(() => {
+document.querySelectorAll('.show-more').forEach(button => {
+button.addEventListener('click', function() {
+const messageDiv = this.parentElement;
+const messageContent = messageDiv.querySelector('.message-content');
+const fullMessage = this.getAttribute('data-full');
+
+if (this.textContent.trim() === 'Show more') {
+messageContent.textContent = fullMessage;
+this.textContent = 'Show less';
+} else {
+const sentences = fullMessage.split(/[.!?]+/).filter(s => s.trim().length > 0);
+const truncatedMessage = sentences.slice(0, 2).join('. ') + '.';
+messageContent.textContent = truncatedMessage;
+this.textContent = 'Show more';
+}
+});
+});
+}, 100);
+
+}
 
 </script>
 
