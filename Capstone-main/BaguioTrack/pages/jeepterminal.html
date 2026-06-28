@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baguio Track | Jeepney Terminals</title>
+  <link rel="stylesheet" href="../assets/css/modern.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      color: #2c2c2c;
+    }
+
+    header#mainHeader {
+      padding: 16px 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    header#mainHeader .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header#mainHeader .logo-area {
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    header#mainHeader nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header#mainHeader nav a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 9px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    header#mainHeader nav a:hover,
+    header#mainHeader nav a.active {
+      color: var(--accent);
+      background: #eff6ff;
+    }
+
+    header#mainHeader .nav-profile-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* HERO */
+    .page-header {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+      border-radius: 24px;
+      padding: 40px 42px;
+      margin-bottom: 28px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      color: #111827;
+      display: grid;
+      gap: 16px;
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 3vw, 3.6rem);
+      color: #111827;
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #475569;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 760px;
+    }
+
+    .page-header .page-actions {
+      margin-top: 24px;
+    }
+
+    .page-header .page-actions .back-btn {
+      background: #263238;
+      color: white;
+      padding: 14px 26px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, background 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .page-header .page-actions .back-btn:hover {
+      background: #37474f;
+      transform: translateY(-1px);
+    }
+
+    /* MAIN */
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 110px 30px 48px 30px;
+      background: transparent;
+      border-radius: 12px;
+      flex: 1 0 auto;
+    }
+
+    .terminal-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .terminal-selection-panel {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      position: sticky;
+      top: calc(72px + 10px);
+    }
+
+    .terminal-selection-panel h2 {
+      margin: 0 0 18px;
+      font-size: 2rem;
+      color: #111827;
+    }
+
+    .terminal-selection-panel .terminal-options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .terminal-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 2px solid #e5e7eb;
+      background: #f9fafb;
+      font-weight: 600;
+      font-size: 16px;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .terminal-option:hover {
+      background: #f3f4f6;
+      border-color: #263238;
+      background: #eff6ff;
+    }
+
+    .terminal-option input {
+      width: 22px;
+      height: 22px;
+      accent-color: #263238;
+      cursor: pointer;
+    }
+
+    .terminal-option input:checked {
+      accent-color: #263238;
+    }
+
+    .panel-actions {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .panel-actions button {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .apply-button {
+      background: #263238;
+      color: #fff;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .apply-button:hover {
+      background: #1f2a33;
+    }
+
+    .results-panel {
+      display: grid;
+      gap: 22px;
+    }
+
+    /* TERMINAL CARDS GRID - OLD STYLE (for responsive) */
+    .terminal-gallery {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .terminal-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .terminal-selection-panel {
+        position: relative;
+        top: auto;
+      }
+    }
+
+    /* BUTTON - OLD STYLE (removed) */
+    .locate-btn {
+      display: none;
+    }
+
+    /* MAP */
+    #map {
+      height: 550px;
+      width: 100%;
+      border-radius: 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+
+    /* INFO PANEL */
+    #infoPanel {
+      background: white;
+      padding: 28px;
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e5e7eb;
+    }
+
+    #infoPanel h2 {
+      margin: 0 0 12px 0;
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    #infoPanel p {
+      margin: 8px 0;
+      color: #4b5563;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* PULSE MARKER */
+    .gpsPulse {
+      width: 14px;
+      height: 14px;
+      background: #1e90ff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 rgba(30, 144, 255, 0.6);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.6);
+      }
+
+      70% {
+        box-shadow: 0 0 0 12px rgba(30, 144, 255, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(30, 144, 255, 0);
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <header id="mainHeader">
+    <div class="header-container">
+      <a href="home.html" class="logo-area"><i class="fas fa-map-location-dot"></i><h2>Baguio Track</h2></a>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="tourist.html">Tourist Spots</a>
+        <a href="jeepterminal.html" class="active">Terminals</a>
+        <div class="nav-profile"><button class="nav-profile-btn" id="profileBtn">Profile</button></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="portal-content">
+    <div class="terminal-layout">
+      <aside class="terminal-selection-panel">
+        <h2>Select Terminal</h2>
+        <div class="terminal-options">
+          <label class="terminal-option"><input type="radio" name="terminal" value="F. Calderon Terminal" checked /> F. Calderon Terminal</label>
+          <label class="terminal-option"><input type="radio" name="terminal" value="Scout Barrio Terminal" /> Scout Barrio Terminal</label>
+          <label class="terminal-option"><input type="radio" name="terminal" value="Kayang Street Terminal" /> Kayang Street Terminal</label>
+          <label class="terminal-option"><input type="radio" name="terminal" value="Baguio Plaza Terminal" /> Baguio Plaza Terminal</label>
+        </div>
+        <div class="panel-actions">
+          <button class="apply-button" id="locateBtn" type="button">Enable Live Location</button>
+        </div>
+      </aside>
+
+      <section class="results-panel">
+        <div id="map"></div>
+        <div id="infoPanel">Select a terminal to view directions from your location.</div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div>
+        <h3>Baguio Track</h3>
+        <p>Your trusted guide to the City of Pines</p>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="tourist.html">Tourist Spots</a>
+        <a href="jeepterminal.html">Terminals</a>
+      </div>
+      <div class="footer-bottom">© <span id="year"></span> Baguio Track</div>
+    </div>
+  </footer>
+  <script>document.getElementById('year')?.appendChild(document.createTextNode(new Date().getFullYear()));</script>
+  <script src="../assets/js/header.js"></script>
+
+  <script>
+    function coloredIcon(color) {
+      return new L.Icon({
+        iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
+        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+    }
+
+    const icons = {
+      red: coloredIcon("red"),
+      orange: coloredIcon("orange"),
+      yellow: coloredIcon("yellow"),
+      violet: coloredIcon("violet"),
+      black: coloredIcon("black"),
+      brown: coloredIcon("grey")
+    };
+
+    const data = {
+      "F. Calderon Terminal": {
+        terminalCoords: [16.4119369, 120.5970769],
+        spots: [
+          { name: "Good Shepherd Convent", coords: [16.42233, 120.62613], note: "Let the driver know: 'Good Shepherd Convent.'", icon: icons.brown },
+          { name: "Botanical Garden", coords: [16.4150, 120.6130], note: "Take the jeepney with the route: BAGUIO PLAZA-MINES VIEW*V.V <br>Tell the driver: 'Botanical Garden, please.'", icon: icons.red },
+          { name: "Mines View Park", coords: [16.4197, 120.6274], note: "Take the jeepney with the route: BAGUIO PLAZA-MINES VIEW*V.V <br> Say: 'Mines View Park, please.'", icon: icons.orange },
+          { name: "The Mansion", coords: [16.4128927, 120.6199063], note: "Take the jeepney with the route: BAGUIO PLAZA-MINES VIEW*V.V <br> Let the driver know: 'Drop me at The Mansion.'", icon: icons.yellow },
+          { name: "Wright Park", coords: [16.413, 120.620], note: "Take the jeepney with the route: BAGUIO PLAZA-MINES VIEW*V.V <br> Tell the driver: 'Wright Park, please.'", icon: icons.violet }
+        ],
+      },
+      "Scout Barrio Terminal": {
+        terminalCoords: [16.4130223, 120.5943422],
+        spots: [
+          { name: "Camp John Hay", coords: [16.397029, 120.611360], note: "Take the jeepney with the route: BAGUIO PLAZA-SCOUT BARRIO*V.V <br>Tell the driver: 'Camp John Hay, please.'", icon: icons.black }
+        ],
+      },
+      "Kayang Street Terminal": {
+        terminalCoords: [16.41455, 120.59389],
+        spots: [
+          { name: "Lourdes Grotto", coords: [16.40847, 120.58535], note: "Take the jeepney with the route: BAGUIO PLAZA-LOURDES-DOMINICAN*V.V <br> Say: 'Lourdes Grotto, please.'", icon: icons.black },
+          { name: "Mirador Heritage Park", coords: [16.40986, 120.58712], note: "Take the jeepney with the route: BAGUIO PLAZA-LOURDES-DOMINICAN*V.V <br> Tell the driver: 'Drop me at Mirador Heritage Park.'", icon: icons.violet },
+          { name: "Diplomat Hotel", coords: [16.408, 120.586], note: "Take the jeepney with the route: BAGUIO PLAZA-LOURDES-DOMINICAN*V.V <br> Tell the driver: 'Diplomat Hotel, please.'", icon: icons.orange }
+        ],
+      },
+      "Baguio Plaza Terminal": {
+        terminalCoords: [16.414, 120.596],
+        spots: [
+          { name: "Igorot Stone Kingdom", coords: [16.408, 120.597], note: "Take the jeepney with the route: BAGUIO PLAZA*V.V <br> Tell the driver: 'Igorot Stone Kingdom, please.'", icon: icons.red },
+          { name: "Dragon Treasure Castle", coords: [16.418, 120.594], note: "Take the jeepney with the route: BAGUIO PLAZA*V.V <br> Say: 'Dragon Treasure Castle, please.'", icon: icons.yellow },
+          { name: "Tam-Awan Village", coords: [16.412, 120.600], note: "Take the jeepney with the route: BAGUIO PLAZA*V.V <br> Tell the driver: 'Tam-Awan Village, please.'", icon: icons.violet },
+          { name: "Bell Church", coords: [16.420, 120.585], note: "Take the jeepney with the route: BAGUIO PLAZA*V.V <br> Say: 'Bell Church, La Trinidad, please.'", icon: icons.brown }
+        ],
+      },
+    };
+
+    let map = L.map("map").setView([16.415, 120.595], 13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+    let userMarker = null;
+    let routeLayer = null;
+
+    document.getElementById("locateBtn").onclick = () => {
+      if (!navigator.geolocation) return alert("Geolocation not supported.");
+      navigator.geolocation.watchPosition(pos => {
+        const { latitude, longitude } = pos.coords;
+        if (!userMarker) {
+          userMarker = L.marker([latitude, longitude], {
+            icon: L.divIcon({
+              html: '<div class="gpsPulse"></div>',
+              className: '',
+              iconSize: [16, 16],
+            })
+          }).addTo(map);
+        } else {
+          userMarker.setLatLng([latitude, longitude]);
+        }
+        map.setView([latitude, longitude], 15);
+      }, () => {
+        alert("Unable to retrieve location. Please enable location services.");
+      });
+    };
+
+    function clearMapExceptUser() {
+      map.eachLayer(layer => {
+        if (layer instanceof L.Polyline) map.removeLayer(layer);
+        if (layer instanceof L.Marker) {
+          if (userMarker && layer === userMarker) return;
+          map.removeLayer(layer);
+        }
+      });
+    }
+
+    function selectTerminal(terminal) {
+      if (!data[terminal]) return;
+      const { terminalCoords, spots } = data[terminal];
+      
+      // Update the radio button
+      const radioButtons = document.querySelectorAll('input[name="terminal"]');
+      radioButtons.forEach(rb => {
+        rb.checked = rb.value === terminal;
+      });
+
+      if (!userMarker) {
+        // Show terminal location on map without user location
+        clearMapExceptUser();
+        map.setView(terminalCoords, 15);
+
+        L.marker(terminalCoords)
+          .addTo(map)
+          .bindPopup(`<b>${terminal}</b>`)
+          .openPopup();
+
+        document.getElementById("infoPanel").innerHTML = `
+          <h2>${terminal}</h2>
+          <p>📍 Enable location to get walking directions</p>
+        `;
+
+        spots.forEach(spot => {
+          L.marker(spot.coords, { icon: spot.icon })
+            .addTo(map)
+            .bindPopup(`<b>${spot.name}</b><br>${spot.note}`);
+        });
+      } else {
+        clearMapExceptUser();
+        map.setView(terminalCoords, 15);
+
+        L.marker(terminalCoords)
+          .addTo(map)
+          .bindPopup(`<b>${terminal}</b>`)
+          .openPopup();
+
+        document.getElementById("infoPanel").innerHTML = `
+          <h2>${terminal}</h2>
+          <p>Generating walking route from your location...</p>
+        `;
+
+        drawRoute(userMarker.getLatLng(), terminalCoords);
+
+        spots.forEach(spot => {
+          L.marker(spot.coords, { icon: spot.icon })
+            .addTo(map)
+            .bindPopup(`<b>${spot.name}</b><br>${spot.note}`);
+        });
+      }
+    }
+
+    // Auto-select terminal from URL parameter
+    function autoSelectTerminal() {
+      const params = new URLSearchParams(window.location.search);
+      const attraction = params.get('attraction');
+      const terminal = params.get('terminal');
+
+      // Map attractions to terminals
+      const attractionToTerminal = {
+        'Mirador Heritage And Eco Park': 'Kayang Street Terminal',
+        'Botanical Garden': 'F. Calderon Terminal',
+        'Mines View Park': 'F. Calderon Terminal',
+        'The Mansion': 'F. Calderon Terminal',
+        'Camp John Hay': 'Scout Barrio Terminal',
+        'Lourdes Grotto': 'Kayang Street Terminal',
+        'Good Shepherd Convent': 'F. Calderon Terminal',
+        'Lions Head': 'Kayang Street Terminal',
+        'Diplomat Hotel': 'Kayang Street Terminal',
+        'Wright Park': 'F. Calderon Terminal',
+        'Igorot Stone Kingdom': 'Baguio Plaza Terminal',
+        'Dragon Treasure Castle': 'Baguio Plaza Terminal',
+        'Tam-Awan Village': 'Baguio Plaza Terminal',
+        'Bell Church': 'Baguio Plaza Terminal'
+      };
+
+      let selectedTerminal = terminal || (attraction ? attractionToTerminal[attraction] : null);
+      if (selectedTerminal) {
+        selectTerminal(selectedTerminal);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(autoSelectTerminal, 500);
+    });
+
+    function drawRoute(start, end) {
+      const url = `https://router.project-osrm.org/route/v1/foot/${start.lng},${start.lat};${end[1]},${end[0]}?overview=full&geometries=geojson`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(res => {
+          const coords = res.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+          if (routeLayer) map.removeLayer(routeLayer);
+          routeLayer = L.polyline(coords, {
+            color: "#145532",
+            weight: 6,
+            opacity: 0.9,
+          }).addTo(map);
+          map.fitBounds(routeLayer.getBounds(), { padding: [40, 40] });
+        })
+        .catch(() => alert("Failed to generate walking route."));
+    }
+  </script>
+
+
+<script src="../assets/js/profile-tabs.js"></script>
+
+<script>
+// Header behavior and profile/login button
+document.addEventListener('DOMContentLoaded', function() {
+  // Header scroll effect
+  const header = document.getElementById('mainHeader') || document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    if (!header) return;
+    if (window.pageYOffset > 50) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
+  });
+
+  // Profile button (login/logout)
+  const profileBtn = document.getElementById('profileBtn');
+  const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+  if (profileBtn) {
+    if (isAdminLoggedIn) {
+      profileBtn.textContent = 'Logout';
+      profileBtn.classList.remove('secondary');
+      profileBtn.style.background = '#dc2626';
+    }
+    profileBtn.addEventListener('click', () => {
+      if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+        localStorage.removeItem('isAdminLoggedIn');
+        localStorage.removeItem('adminEmail');
+        localStorage.removeItem('adminToken');
+        window.location.href = 'home.html';
+      } else {
+        window.location.href = 'adminlogin.html';
+      }
+    });
+  }
+});
+</script>

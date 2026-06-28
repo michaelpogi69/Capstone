@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baguio Track | Admin Login</title>
+  <link rel="stylesheet" href="../assets/css/modern.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    #optionsContainer{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:10px;
+    }
+
+    #optionsContainer button{
+      width:100%;
+      padding:12px;
+      border-radius:6px;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    .back-link{
+      margin-top:15px;
+      text-align:center;
+      font-size:14px;
+    }
+
+    .back-link a.button-like{
+      display:block;
+      width:100%;
+      max-width:100%;
+      margin:0 auto;
+      box-sizing:border-box;
+      padding:12px;
+      background:#ffffff;
+      color:#154d2e;
+      border:1px solid #cfcfcf;
+      border-radius:6px;
+      text-decoration:none;
+      font-size:15px;
+      cursor:pointer;
+    }
+
+    .back-link a.button-like:hover{
+      background:#f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <!-- Unified header -->
+  <header id="mainHeader">
+    <div class="header-container">
+      <a href="home.html" class="logo-area">
+        <i class="fas fa-map-location-dot"></i>
+        <h2>Baguio Track</h2>
+      </a>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="tourist.html">Tourist Spots</a>
+        <a href="jeepterminal.html">Terminals</a>
+        <div class="nav-profile">
+          <button class="nav-profile-btn secondary" id="profileBtn">Profile</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding: 40px 20px; max-width:480px; margin: 80px auto 0;">
+    <section id="login-section">
+      <div class="login-container">
+        <img src="../assets/images/logo.png" alt="Baguio Track Logo" class="logo" />
+        <h1>Admin Portal</h1>
+        <p>Sign in with your admin Gmail account to manage site content.</p>
+
+        <form id="adminLoginForm">
+          <div id="optionsContainer">
+            <button
+              type="button"
+              id="googleSignInBtn"
+              class="nav-profile-btn"
+              style="background:white; color:var(--accent); border:1px solid var(--border);"
+            >
+              <i class="fab fa-google" style="margin-right:8px"></i> Sign In with Google
+            </button>
+          </div>
+
+          <div class="back-link">
+            <a href="index.html" class="button-like">Back to User Login</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPFnyJC66A-HQC3dKCQQ4SobAFRezx7fU",
+      authDomain: "baguio-track-c702f.firebaseapp.com",
+      projectId: "baguio-track-c702f",
+      storageBucket: "baguio-track-c702f.firebasestorage.app",
+      messagingSenderId: "27598181344",
+      appId: "1:27598181344:web:97bf7dd2a32dbfe14ed185"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const ADMIN_ALLOWLIST = [
+      "dotcarbtrack@gmail.com"
+    ];
+
+    document.getElementById("googleSignInBtn").addEventListener("click", async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        
+        // Sign out any existing session first
+        await signOut(auth);
+        
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        const userEmail = user.email?.toLowerCase() || "";
+
+        console.log("Attempting login with email:", userEmail);
+        console.log("Allowlist:", ADMIN_ALLOWLIST);
+
+        // Check if email is in allowlist
+        if (!ADMIN_ALLOWLIST.includes(userEmail)) {
+          alert(`❌ Email not authorized: "${userEmail}"\n\nOnly dotcarbtrack@gmail.com can access admin portal.`);
+          return;
+        }
+
+        localStorage.setItem("isAdminLoggedIn", "true");
+        localStorage.setItem("adminEmail", userEmail);
+        alert("✅ Welcome, admin!");
+        window.location.href = "admin.html";
+      } catch (error) {
+        alert("❌ " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

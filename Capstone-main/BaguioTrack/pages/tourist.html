@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Baguio Track | Tourist Spots</title>
+  <link rel="stylesheet" href="../assets/css/modern.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+      :root {
+        --header-height: 72px;
+      }
+
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        color: #111827;
+        background: url("../assets/images/123.jpg") no-repeat center center fixed;
+        background-size: cover;
+        padding-top: var(--header-height);
+        display: flex;
+        flex-direction: column;
+      }
+
+      main.portal-content {
+        flex: 1 0 auto;
+      }
+
+    header#mainHeader {
+      padding: 16px 0;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    header#mainHeader .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header#mainHeader .logo-area {
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    header#mainHeader nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    header#mainHeader nav a {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 9px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    header#mainHeader nav a:hover,
+    header#mainHeader nav a.active {
+      color: var(--accent);
+      background: #eff6ff;
+    }
+
+    header#mainHeader .nav-profile-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .logo-area img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #f2d7b5;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-area img:hover {
+      transform: scale(1.08);
+    }
+
+    .logo-area h2 {
+      font-size: 22px;
+      color: #111827;
+      margin: 0;
+    }
+
+    a,
+    a:hover,
+    a:focus,
+    a:active{
+      text-decoration:none !important;
+      color:inherit;
+    }
+
+    main.portal-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 30px 48px;
+    }
+
+    .page-header {
+      background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
+      border-radius: 24px;
+      padding: 40px 42px;
+      margin-bottom: 28px;
+      display: grid;
+      gap: 16px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .page-header h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 3vw, 3.6rem);
+      color: #111827;
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+    }
+
+    .page-header p {
+      margin: 0;
+      max-width: 780px;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #475569;
+    }
+
+    .tourist-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) 1fr;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .filters-panel {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      position: sticky;
+      top: calc(var(--header-height) + 10px);
+    }
+
+    .filters-panel h2 {
+      margin: 0 0 18px;
+      font-size: 2rem;
+      color: #111827;
+    }
+
+    .filter-group {
+      margin-bottom: 24px;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 14px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .filter-group input[type="search"] {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid #d1d5db;
+      background: #f8fafc;
+    }
+
+    .checkbox-group {
+      display: grid;
+      gap: 12px;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .checkbox-item input {
+      width: 18px;
+      height: 18px;
+      accent-color: #263238;
+    }
+
+    .panel-actions {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .panel-actions button {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .apply-button {
+      background: #263238;
+      color: #fff;
+    }
+
+    .clear-button {
+      background: #fff;
+      border: 1px solid #d1d5db;
+    }
+
+    .results-panel {
+      display: grid;
+      gap: 22px;
+    }
+
+    .attractions-list {
+      display: grid;
+      gap: 22px;
+    }
+
+    .attraction-card {
+      background: #ffffff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      display: grid;
+      grid-template-columns: 320px 1fr;
+    }
+
+    .attraction-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      min-height: 240px;
+    }
+
+    .attraction-body {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .category-link {
+      display: inline-flex;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      font-weight: 700;
+    }
+
+    .attraction-title {
+      margin: 12px 0 8px;
+      font-size: 1.75rem;
+    }
+
+    .location,
+    .card-description {
+      color: #4b5563;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .card-button {
+      background: #263238;
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 16px;
+      text-decoration: none;
+    }
+
+    .card-link {
+      border: 1px solid #d1d5db;
+      padding: 14px 22px;
+      border-radius: 16px;
+      text-decoration: none;
+      color: #111827;
+    }
+
+    @media (max-width: 900px) {
+      .tourist-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="mainHeader">
+    <div class="header-container">
+      <a href="home.html" class="logo-area"><i class="fas fa-map-location-dot"></i><h2>Baguio Track</h2></a>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="tourist.html" class="active">Tourist Spots</a>
+        <a href="jeepterminal.html">Terminals</a>
+        <div class="nav-profile"><button class="nav-profile-btn" id="profileBtn">Profile</button></div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="portal-content">
+    <section class="tourist-layout">
+      <aside class="filters-panel">
+        <h2>Find Spots</h2>
+        <div class="filter-group">
+          <label for="search-attraction">Search attractions</label>
+          <input id="search-attraction" type="search" placeholder="Search by name, place, or category" />
+        </div>
+        <div class="filter-group">
+          <label>Categories</label>
+          <div class="checkbox-group">
+            <label class="checkbox-item"><input type="checkbox" value="Nature" checked /> Nature</label>
+            <label class="checkbox-item"><input type="checkbox" value="Park" checked /> Park</label>
+            <label class="checkbox-item"><input type="checkbox" value="Landmark" checked /> Landmark</label>
+            <label class="checkbox-item"><input type="checkbox" value="Culture" checked /> Culture</label>
+          </div>
+        </div>
+        <div class="panel-actions">
+          <button class="apply-button" type="button">Apply Filters</button>
+          <button class="clear-button" type="button">Clear</button>
+        </div>
+      </aside>
+
+      <section class="results-panel">
+        <div class="attractions-list">
+
+      <!-- Mirador -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/736x/11/50/aa/1150aa2cd209123f65ae4af4bb5911f9.jpg" alt="Mirador Heritage and Eco Park">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Nature</span>
+            <h2 class="attraction-title">Mirador Heritage And Eco Park</h2>
+            <p class="location">St. Theresa St 1 2600 Baguio City</p>
+            <p class="card-description">
+              A popular spot for tourists and locals alike, who come to enjoy the stunning views of Baguio City and the surrounding mountains and is also home to a bamboo grove, rock formations, and more.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="mirador.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Mirador%20Heritage%20And%20Eco%20Park">Directions</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botanical Garden -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/botanicalgarden.jpg" alt="Botanical Garden">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Nature</span>
+            <h2 class="attraction-title">Botanical Garden</h2>
+            <p class="location">Gibraltar Rd, Baguio City</p>
+            <p class="card-description">
+              A peaceful botanical sanctuary with towering pines, flower gardens, and cultural sculptures perfect for relaxing walks and photo spots.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="botanical.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Botanical%20Garden">Directions</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mines View Park -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/minesviewpark.jpg" alt="Mines View Park">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Park</span>
+            <h2 class="attraction-title">Mines View Park</h2>
+            <p class="location">Barangay Shilan, Baguio City</p>
+            <p class="card-description">
+              A popular viewpoint offering sweeping mountain vistas, historic mining landscapes, and shops selling local crafts and treats.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="minesview.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Mines%20View%20Park">Directions</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- The Mansion -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/mansion.jpg" alt="The Mansion">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">The Mansion</h2>
+            <p class="location">Romulo Drive, Baguio City</p>
+            <p class="card-description">
+              The official summer residence of the Philippine President, known for its grand gate, manicured lawns, and historical significance.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="mansion.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=The%20Mansion">Directions</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Camp John Hay -->
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/camp.jpg" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Park</span>
+            <h2 class="attraction-title">Camp John Hay</h2>
+            <p class="location">Loakan Road, Baguio City</p>
+            <p class="card-description">
+              A historic leisure complex with pine forests, trails, cafés, and heritage sites perfect for outdoor exploration.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="johnhay.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Camp%20John%20Hay">Directions</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/grotto.jpg" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">Lourdes Grotto</h2>
+            <p class="location">Lourdes Grotto, Baguio City</p>
+            <p class="card-description">
+              A beloved pilgrimage site featuring the Virgin Mary statue atop 252 steps and panoramic city views for reflective moments.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="grotto.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Lourdes%20Grotto">Directions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/18/a5/28/18a5289c26005e8d1480cb4aef29950b.jpg" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Good Shepherd Convent</h2>
+            <p class="location">Good Shepherd, Baguio City</p>
+            <p class="card-description">
+              Famous for ube jam and local pasalubong, this convent is a scenic stop for shopping, snacks, and quiet reflection.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href="goodshepherd.html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Good%20Shepherd%20Convent">Directions</a>
+          </div>
+        </div>
+      </div>
+        <div class="attraction-card">
+        <img class="attraction-image" src="../assets/images/lion.webp" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">Lions Head</h2>
+            <p class="location">Kennon Road, near Barangay Calasungay, Tuba, Benguet</p>
+            <p class="card-description">
+              The Lion’s Head along Kennon Road is a famous roadside landmark in Benguet, Philippines, carved into the mountainside as a large lion’s head sculpture.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Lions%20Head">Directions</a>
+          </div>
+        </div>
+      </div>
+              <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/90/ad/e5/90ade57f70358c88c020cb78fd4d4b00.jpg" alt="Camp John Hay">
+
+        <div class="attraction-body">
+          <div>
+            <span class="category-link">Landmark</span>
+            <h2 class="attraction-title">Diplomat Hotel</h2>
+            <p class="location"> Dominican Hill, Diplomat Road, Baguio, 2600 Benguet</p>
+            <p class="card-description">
+              This hotel holds a lot of history, from being a seminary to a hotel, and now a popular tourist attraction known for its architecture and ghost stories.
+            </p>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Diplomat%20Hotel">Directions</a>
+          </div>
+        </div>
+      </div>
+       <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/9e/a1/9d/9ea19da330f29c25a4f5f920f46e466d.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Park</span>
+            <h2 class="attraction-title">Wright Park</h2>
+            <p class="location"> The Mansion, Romulo Dr, Baguio, Benguet</p>
+            <p class="card-description">
+               The park is a favorite spot for tourists and locals to enjoy leisurely walks, take photos, and experience the cool mountain air.
+            </p>
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Wright%20Park">Directions</a>
+          </div>
+        </div>
+      </div>
+        <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/736x/f2/48/81/f248816e6f5950cb5ab481af89c95e5d.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Igorot Stone Kingdom</h2>
+            <p class="location"> Long Long Road, Pinsao Proper, Baguio City</p>
+            <p class="card-description">
+               The park celebrates Igorot culture through the traditional “riprap” stone-laying technique, which involves stacking stones without cement to create durable structures 
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Igorot%20Stone%20Kingdom">Directions</a>
+          </div>
+        </div>
+      </div>
+      <div class="attraction-card">
+        <img class="attraction-image" src="https://lakbaypinas.com/wp-content/uploads/2025/02/471333542_122116129676614614_476453595541820013_n-1536x864.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Dragon Treasure Castle</h2>
+            <p class="location"> Block 8, Irisville Subdivision Baguio City, Benguet</p>
+            <p class="card-description">
+               Dragon Treasure Castle is worth visiting if you want dramatic photos, fantasy-style architecture, and a short Baguio side trip that feels different from the usual city stops.
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Dragon%20Treasure%20Castle">Directions</a>
+          </div>
+        </div>
+      </div>
+      <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/1200x/35/67/2c/35672c91f7f83f36499f5117c76f78d1.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Tam-Awan Village</h2>
+            <p class="location">  Long Long Benguet Rd, Baguio City, Benguet</p>
+            <p class="card-description">
+               Tam-Awan Village holds its true values and culture of the Cordilleran heritage.
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Tam-Awan%20Village">Directions</a>
+          </div>
+        </div>
+      </div>
+      <div class="attraction-card">
+        <img class="attraction-image" src="https://i.pinimg.com/736x/33/45/08/334508be47f39d2f03b6ba791a11a97e.jpg" alt="Camp John Hay">
+      <div class="attraction-body">
+          <div>
+            <span class="category-link">Culture</span>
+            <h2 class="attraction-title">Bell Church</h2>
+            <p class="location"> Bell Church Rd, La Trinidad, Benguet </p>
+            <p class="card-description">
+              Bell Church is a Chinese temple known for its colorful architecture, serene gardens, and cultural significance to the local Chinese-Filipino community.
+
+          </div>
+          <div class="card-actions">
+            <a class="card-button" href=".html">View Details</a>
+            <a class="card-link" href="jeepterminal.html?attraction=Bell%20Church">Directions</a>
+          </div>
+        </div>
+      </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div>
+        <h3>Baguio Track</h3>
+        <p>Your trusted guide to the City of Pines</p>
+      </div>
+      <div class="footer-links">
+        <a href="home.html">Home</a>
+        <a href="tourist.html">Tourist Spots</a>
+        <a href="jeepterminal.html">Terminals</a>
+      </div>
+      <div class="footer-bottom">© <span id="year"></span> Baguio Track</div>
+    </div>
+  </footer>
+  <script>document.getElementById('year')?.appendChild(document.createTextNode(new Date().getFullYear()));</script>
+  <script src="../assets/js/header.js"></script>
+  <script src="../assets/js/profile-tabs.js"></script>
+<script>
+// Attraction Filtering System
+function filterAttractions() {
+  const searchText = document.getElementById('search-attraction').value.toLowerCase().trim();
+  
+  // Get selected categories
+  const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+  const selectedCats = [];
+  checkboxes.forEach(cb => {
+    if (cb.checked) {
+      selectedCats.push(cb.value);
+    }
+  });
+  
+  // Filter each card
+  const cards = document.querySelectorAll('.attraction-card');
+  cards.forEach(card => {
+    const categorySpan = card.querySelector('.category-link');
+    const titleH2 = card.querySelector('.attraction-title');
+    const descP = card.querySelector('.card-description');
+    
+    const cardCategory = categorySpan ? categorySpan.textContent.trim() : '';
+    const cardTitle = titleH2 ? titleH2.textContent.toLowerCase() : '';
+    const cardDesc = descP ? descP.textContent.toLowerCase() : '';
+    
+    // Check if category matches
+    let categoryMatch = false;
+    if (selectedCats.length === 0) {
+      categoryMatch = true;
+    } else {
+      categoryMatch = selectedCats.includes(cardCategory);
+    }
+    
+    // Check if search matches
+    let searchMatch = false;
+    if (searchText === '') {
+      searchMatch = true;
+    } else {
+      searchMatch = cardTitle.includes(searchText) || 
+                   cardDesc.includes(searchText) || 
+                   cardCategory.toLowerCase().includes(searchText);
+    }
+    
+    // Show or hide card
+    if (categoryMatch && searchMatch) {
+      card.style.display = 'grid';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function clearAllFilters() {
+  document.getElementById('search-attraction').value = '';
+  
+  const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+  checkboxes.forEach(cb => {
+    cb.checked = true;
+  });
+  
+  filterAttractions();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Header scroll
+  const header = document.getElementById('mainHeader') || document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    if (!header) return;
+    if (window.pageYOffset > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled');
+  });
+
+  // Profile button (login/logout)
+  const profileBtn = document.getElementById('profileBtn');
+  const isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true';
+  if (profileBtn) {
+    if (isAdminLoggedIn) {
+      profileBtn.textContent = 'Logout';
+      profileBtn.classList.remove('secondary');
+      profileBtn.style.background = '#dc2626';
+    }
+    profileBtn.addEventListener('click', () => {
+      if (localStorage.getItem('isAdminLoggedIn') === 'true') {
+        localStorage.removeItem('isAdminLoggedIn');
+        localStorage.removeItem('adminEmail');
+        localStorage.removeItem('adminToken');
+        window.location.href = 'home.html';
+      } else {
+        window.location.href = 'adminlogin.html';
+      }
+    });
+  }
+
+  // Setup filter event listeners
+  const searchBox = document.getElementById('search-attraction');
+  if (searchBox) {
+    searchBox.addEventListener('input', filterAttractions);
+    searchBox.addEventListener('change', filterAttractions);
+  }
+
+  const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', filterAttractions);
+  });
+
+  const applyBtn = document.querySelector('.apply-button');
+  if (applyBtn) { applyBtn.addEventListener('click', filterAttractions); }
+  const clearBtn = document.querySelector('.clear-button');
+  if (clearBtn) { clearBtn.addEventListener('click', clearAllFilters); }
+
+  // Initial filter run
+  filterAttractions();
+});
+</script>
+</body>
+</html>
